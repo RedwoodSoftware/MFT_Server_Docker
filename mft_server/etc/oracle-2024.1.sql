@@ -1,0 +1,1 @@
+ALTER TABLE domain_trigger_state ADD fileName VARCHAR(1024) DEFAULT NULL;

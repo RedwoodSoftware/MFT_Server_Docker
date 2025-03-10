@@ -1,0 +1,84 @@
+services:
+    mft_server_a:
+        image: "public.ecr.aws/s9n3l9g8/redwood/mft_server:latest"
+        environment:
+            # Username to be created for intial administrator access
+            JSCAPE_ADMIN_USER: "nick"
+            # Password to be assigned to that initial administrator
+            JSCAPE_ADMIN_PASSWORD: "nick"
+            # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior to referencing in this compose file, this process will populate the schema into this empty database
+            JDBC_CONNECTION_STRING: "jdbc:postgresql://10.29.29.90:5432/mft"
+            # Username for accessing the database
+            JDBC_USER: "mftnick"
+            # Password for accessing the database
+            JDBC_PASSWORD: "mftnick"
+            # Memory to assign to the JVM for MFT Server to be able to leverage UP TO. This number is in GB
+            SERVER_MEMORY: "2"
+            # Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane.
+            PREV_VERSION: ""
+            # Name of the domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
+            JSCAPE_DOMAIN_NAME: ""
+        ports:
+            # Port mapping for admin HTTP interface (only one of the two is required but both can be used)
+            - "11880:11880"
+            # Port mapping for admin HTTPS interface (only one of the two is required but both can be used)
+            - "11443:11443"
+        volumes:
+            # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
+            - ./license.lic:/opt/mft_server/etc/license.lic
+            # Persistent volume storage for configurations, custom libraries, users, data, and domain logs.
+            - mft_server_data:/opt/mft_server/etc
+            - mft_server_data:/opt/mft_server/libs/jdbc
+            - mft_server_data:/opt/mft_server/libs/actions
+            - mft_server_data:/opt/mft_server/libs/ext
+            - mft_server_data:/opt/mft_server/data
+            - mft_server_data:/opt/mft_server/users
+            - mft_server_data:/opt/mft_server/logs
+        networks:
+            - jscape_network
+
+    mft_server_b:
+        image: "public.ecr.aws/s9n3l9g8/redwood/mft_server:latest"
+        environment:
+            # Username to be created for intial administrator access
+            JSCAPE_ADMIN_USER: "nick"
+            # Password to be assigned to that initial administrator
+            JSCAPE_ADMIN_PASSWORD: "nick"
+            # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior to referencing in this compose file, this process will populate the schema into this empty database
+            JDBC_CONNECTION_STRING: "jdbc:postgresql://10.29.29.90:5432/mft"
+            # Username for accessing the database
+            JDBC_USER: "mftnick"
+            # Password for accessing the database
+            JDBC_PASSWORD: "mftnick"
+            # Memory to assign to the JVM for MFT Server to be able to leverage UP TO. This number is in GB
+            SERVER_MEMORY: "2"
+            # Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane.
+            PREV_VERSION: ""
+            # Name of the domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
+            JSCAPE_DOMAIN_NAME: ""
+        ports:
+            # Port mapping for admin HTTP interface (only one of the two is required but both can be used)
+            - "11881:11880"
+            # Port mapping for admin HTTPS interface (only one of the two is required but both can be used)
+            - "11444:11443"
+        volumes:
+            # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
+            - ./license.lic:/opt/mft_server/etc/license.lic
+            # Persistent volume storage for configurations, custom libraries, users, data, and domain logs.
+            - mft_server_data_b:/opt/mft_server/etc
+            - mft_server_data_b:/opt/mft_server/libs/jdbc
+            - mft_server_data_b:/opt/mft_server/libs/actions
+            - mft_server_data_b:/opt/mft_server/libs/ext
+            - mft_server_data_b:/opt/mft_server/data
+            - mft_server_data_b:/opt/mft_server/users
+            - mft_server_data_b:/opt/mft_server/logs
+        networks:
+            - jscape_network
+        depends_on:
+            - mft_server_a
+
+volumes:
+    mft_server_data:
+    mft_server_data_b:
+networks:
+    jscape_network:

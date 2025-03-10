@@ -1,0 +1,83 @@
+#!/bin/bash
+
+## This example demonstrates how to create a FTP network storage using the server API.
+echo -e '\n';
+echo "###########################################################################"
+echo "This example demonstrates how to download a file using the client REST API."
+echo "###########################################################################"
+
+
+### Read from the user
+echo -e '\n';
+echo "Enter protocol:"
+read proto
+echo "Enter server host:"
+read jscapehost
+echo "Enter server port:"
+read jscapeclientport
+echo "Enter username:"
+read username
+echo "Enter password:"
+read password
+echo "Enter domain name:"
+read domain
+echo "Enter remote file path:"
+read remotePath
+echo "Enter local file path:"
+read localPath
+
+
+### make a cookie file to store the session id and get it through get_session_id()
+cookie_file=`mktemp /tmp/cookie.XXXXXXXXXX`
+
+get_session_id() {
+   grep JSESSIONID $cookie_file | awk '{printf "%s=%s",$6,$7}'
+}
+
+
+## Login to MFT Server
+loginResponse=$(curl -s -k -c "$cookie_file" -w "%{http_code}" -o /dev/null -H "Content-type: application/json" -X POST -d "{\"domain\":\"$domain\",\"username\":\"$username\", \"password\":\"$password\"}" $proto://$jscapehost:$jscapeclientport/rest/login)
+
+## check server reachable
+if [[ "$loginResponse" -eq 000 ]]; then 
+echo -e '\n';
+echo "Could not connect to the server..";  
+else
+
+if [[ "$loginResponse" -eq 204 ]]; then 
+echo -e '\n';
+echo "Login success. Proceeding to download the file ..";  
+
+### get session cookie
+sid="`get_session_id`"
+
+## get CSRF token
+csrftoken=`curl -s -k -b "$sid" -H "Content-type: application/json" $proto://$jscapehost:$jscapeclientport/rest/csrf-token`
+
+## downloadFile
+downloadFileResponse=$(curl -s -o $localPath -k -b "$sid" -w "%{http_code}" -o /dev/null -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "accept: */*" -H "Content-type: application/json" -X GET $proto://$jscapehost:$jscapeclientport/rest/files?path=$remotePath)
+
+## Completion check
+if [[ "$downloadFileResponse" -eq 200 ]]; then 
+echo -e '\n'; 
+echo "File downloaded successfully.."  
+else
+echo "File download failed, check localpath and remotepath.."     
+fi
+else
+if [[ "$loginResponse" -eq 500 ]]; then
+echo -e '\n';
+echo "Response code 500 Invalid credentials.."; 
+else  
+echo -e '\n';   
+echo "Login failed. Re-check protocol,host,port,user and password";  
+fi
+fi
+fi
+
+
+### logout
+curl -s -k -b "`get_session_id`" -X POST $proto://$jscapehost:$jscapeclientport/rest/logout
+
+### delete cookie file
+rm $cookie_file

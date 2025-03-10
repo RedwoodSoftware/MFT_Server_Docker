@@ -1,0 +1,49 @@
+#buttonsbar {
+    height: 1%;
+    margin: 0 0 3px;
+}
+
+#buttonsbar form {
+    display: inline;
+    float: left;
+    margin: 0;
+}
+
+#buttonsbar form#actionform {
+    margin-bottom: 1em;
+}
+
+button {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	margin: 0 .1em;
+	padding: 1px .6em .15em;
+	overflow: visible; /* fix IE buttons stretch */
+}
+
+button img {
+	border: none !important;
+	padding: 0;
+	margin: 0;
+	vertical-align: text-bottom;
+}
+
+button img.disabled {
+    -moz-opacity: 0.6;
+    filter: alpha(opacity: 60);
+    opacity: 0.6;
+}
+
+button[disabled] img {
+    -moz-opacity: 0.6;
+    filter: alpha(opacity: 60);
+    opacity: 0.6;
+}
+
+button span {
+	margin-left: .3em;
+}
+
+button div {
+    font-size: 86%;
+	text-align: center;
+}

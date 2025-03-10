@@ -1,0 +1,28 @@
+ALTER TABLE log ADD fake_id VARCHAR(255); 
+
+
+UPDATE log SET fake_id = id;
+
+
+DROP TRIGGER "LOG_TEST";
+
+
+DROP SEQUENCE "LOG_SEQ";
+
+
+ALTER TABLE log DROP COLUMN id;
+
+
+ALTER TABLE log ADD id VARCHAR(255) DEFAULT '0' NOT NULL;
+
+
+UPDATE log SET id = fake_id;
+
+
+ALTER TABLE log ADD PRIMARY KEY (id);
+
+
+ALTER TABLE log DROP COLUMN fake_id;
+
+
+ALTER TABLE log ADD domainName VARCHAR(255) DEFAULT NULL;

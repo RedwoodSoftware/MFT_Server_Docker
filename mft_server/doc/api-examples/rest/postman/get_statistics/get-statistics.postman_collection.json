@@ -1,0 +1,669 @@
+{
+	"info": {
+		"_postman_id": "6b6f39ec-2f1c-477a-9175-dc4b72846014",
+		"name": "get-statistics",
+		"description": "This folder contains examples on how to login to REST Server API and get statistics.\n\n**Domain Statistics**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Get Domain statistics (API - Domain statistics).\n5. Logout from MFT Server (API - Logout request).\n    \n\n**Triggers Statistics**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Get Triggers statistics (API - Triggers statistics).\n5. Logout from MFT Server (API - Logout request).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6922053"
+	},
+	"item": [
+		{
+			"name": "domain statistics",
+			"item": [
+				{
+					"name": "API - Get CSRF token before login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token before login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Login request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.request.body && pm.request.body.raw) pm.request.body.raw = pm.request.body.raw.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g,'');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/login",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"login"
+							]
+						},
+						"description": "API Request to login into MFT Server.\n\nModify the server username and password on the json body.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Get CSRF token after login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token after login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Domain Statistics",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/server/statistics/domains",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"server",
+								"statistics",
+								"domains"
+							]
+						},
+						"description": "- API Request to get domain statistics.\n    \n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Logout request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/logout",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"logout"
+							]
+						},
+						"description": "API Request to logout from MFT Server\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains examples on how to login to REST Server API and get domain statistics.\n\n**Domain Statistics**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Get Domain statistics (API - Domain statistics).\n5. Logout from MFT Server (API - Logout request)."
+		},
+		{
+			"name": "triggers statistics",
+			"item": [
+				{
+					"name": "API - Get CSRF token before login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token before login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Login request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.request.body && pm.request.body.raw) pm.request.body.raw = pm.request.body.raw.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g,'');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/login",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"login"
+							]
+						},
+						"description": "API Request to login into MFT Server.\n\nModify the server username and password on the json body.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Get CSRF token after login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token after login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Triggers Statistics",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/server/statistics/triggers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"server",
+								"statistics",
+								"triggers"
+							]
+						},
+						"description": "- API Request to get triggers statistics.\n    \n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)\n    \n\nThe API returns JSON and each object contains these ekys\n\n- date (date in milliseconds)\n- runningTriggers (total count)\n- completedTriggers (total count)\n- failedTriggers (total count)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Logout request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/logout",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"logout"
+							]
+						},
+						"description": "API Request to logout from MFT Server\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains examples on how to login to REST Server API and get triggers statistics.\n\n**Triggers Statistics**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Get Triggers statistics (API - Triggers statistics).\n5. Logout from MFT Server (API - Logout request)."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "csrf-token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "serverhost",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "servermanagementport",
+			"value": "11880",
+			"type": "string"
+		},
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,18 @@
+<html>
+<head>
+    <script type="text/javascript" language="javascript">
+        var LOGIN_URL = "/action/login";
+        var PROXY_ID = "proxycontainer";
+
+        function init() {
+            var proxy = document.getElementById(PROXY_ID);
+            proxy.src = encodeURI(LOGIN_URL + location.search);
+        }
+    </script>
+</head>
+<body onload="init()">
+
+<iframe id="proxycontainer" src="/empty.html" width="100%" height="100%"/>
+
+</body>
+</html>

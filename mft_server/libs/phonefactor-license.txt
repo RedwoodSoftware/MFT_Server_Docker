@@ -1,0 +1,128 @@
+---------------
+
+Copyright (c) 2008 Positive Networks, Inc.
+
+Permission is hereby granted, free of charge, to any person
+obtaining  a copy of this software and associated documentation
+files (the "Software"),  to deal in the Software without
+restriction, including without limitation the  rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT  SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,  ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER  DEALINGS IN THE SOFTWARE.
+
+---------------
+
+Contents:
+	docs/README: this file.
+	docs/call_results.txt: a list of call_result id's and what they mean
+	docs/Example.java: an example program using the pfsdk
+	docs/ExampleUserSync.java: an example program using the pfsdk for user sync
+	docs/api: pfsdk api documentation
+	lib/PhoneFactorSDK-???.jar: the java pfsdk
+
+
+------------------------
+- General Instructions -
+------------------------
+
+SDK Basics
+----------
+The Java SDK consists of a jar file and example code.  There is documentation on
+the api calls in the docs/api directory.  Place the jar file in your application
+server / java environment's class path to install the api.  Use the Example.java
+file as an example of how to use the SDK.
+
+Requirements
+------------ 
+Java 1.4.2 or greater.  If you experience a SecurityException resulting from a
+failed SSL handshake, then you likely need to update your java environment to a
+later release that incorperates a newer root ca list in the default keystore in
+order to validate the certificate of the PhoneFactor servers.  As of this
+writing, recent releases of java 1.4.2, 1.5, and 1.6 work.
+
+Configuration
+-------------
+When using the SDK, you must initialize the PFAuth object with two pieces of
+information.  The first piece is the directory where the SDK configuration files
+are at.  The configuration files include your public key (cert.pem), private
+key (pkey.der), and license.xml file as provided when you downloaded the SDK.
+The second piece of information PFAuth needs is the password to access your
+protected private key.  When you downloaded the SDK, your private key was
+protected with a random password and that password was placed in the file
+private-key-password.txt along with items for your configuration directory.
+You can elect to hard code this password in your code, but we suggest using
+some other secure mechanism to store your key password and to provide it to
+PFAuth.  You should remove the private-key-password.txt file once you have
+persisted the private key password inside your application / system.  The SDK
+does NOT use private-key-password.txt as a configuration file.  If you hard
+code this password in your code, it really is functionally no different than
+having your private key unprotected on disk outside of the additional
+obfuscation of locating the hard coded password in your compiled java bytecode.
+We feel it is superior to have *some* password on your keyfile, even if hard
+coded in code, since it will at least add some additional time and difficulty
+for somebody who has compromised your server, which equates to time for your
+orginization to react to the situation.
+
+Private Key Details
+-------------------
+Your private key is stored in as an encrypted PKCS8 DER format file.  It should
+reside in your configuration directory as pkey.der.  It was encrypted with a
+random password when you downloaded the SDK.  The password was placed in the
+private-key-password.txt file that shipped with your configuration files in the
+archive you downloaded.  You should be sure to remove this file once you have
+persisted / integrated your private key password.  You can change the password
+on your private key file with a pkcs8 key utility such as openssl's pkcs8
+command.  Below is an example of using openssl to change your private key
+password:
+
+# First we use the following command creates an unencrypted pem version of your
+# private key in pkey.pem.
+
+openssl pkcs8 -inform der -outform pem -in pkey.der -out pkey.pem
+
+# Now we take the pkey.pem and store it as an encrypted pkcs8 der format key
+# with a new password with the following command.  It will prompt you for the
+# password you wish to use.
+
+openssl pkcs8 -topk8 -inform pem -outform der -in pkey.pem -v1 PBE-SHA1-3DES -out pkey-new.der
+
+# Now pkey-new.der is encrypted with the password you chose in pkcs8 encrypted
+# private key format.  You can now replace pkey.der with pkey-new.der to start
+# using this private key file.  BE SURE to remove pkey.pem as it is unencrypted.
+# It may be wise to backup your old pkey.der incase you have made an error.  For
+# example, I would probably do the following:
+
+rm pkey.pem
+mv pkey.der pkey-backup.der
+mv pkey-new.der pkey.der
+
+# When I was sure things were working, I would then go back and remove the
+# pkey-backup.der.
+
+Certificate Details
+-------------------
+Your client certificate should reside as cert.pem in the configuration
+directory.  The client certificate is used by the PhoneFactor server to
+authenticate your SDK connection.  Nothing special is required other than to
+ensure this file is located in your configuration directory.
+
+License Details
+---------------
+Your license was provided to you in license.xml when you downloaded the SDK and
+should reside in your configuration directory as license.xml. 
+
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<!-- JSCAPE MFT Server Manifest -->
+
+<service_bundle type='manifest' name='jscape'>
+<service
+        name='application/jscape'
+        type='service'
+        version='1'>
+
+        <create_default_instance enabled='true'/>
+        <single_instance/>
+
+        <dependency name='config-file'
+                    grouping='require_all'
+                    restart_on='none'
+                    type='path'>
+                <service_fmri value='file:///opt/JSCAPE_MFT_Server/server'/>
+        </dependency>
+
+        <dependency name='loopback'
+                    grouping='require_all'
+                    restart_on='error'
+                    type='service'>
+                <service_fmri value='svc:/network/loopback:default'/>
+        </dependency>
+
+        <dependency name='physical'
+                    grouping='require_all'
+                    restart_on='error'
+                    type='service'>
+                <service_fmri value='svc:/network/physical:default'/>
+        </dependency>
+
+        <dependency name='fs-local'
+                    grouping='require_all'
+                    restart_on='none'
+                    type='service'>
+                <service_fmri value='svc:/system/filesystem/local'/>
+        </dependency>
+
+        <exec_method
+                type='method'
+                name='start'
+                exec='/opt/JSCAPE_MFT_Server/server start'
+                timeout_seconds='60'>
+                <method_context>
+                    <method_credential user='jscape' group='jscape' privileges='basic,net_privaddr'/>
+                </method_context>
+        </exec_method>
+
+        <exec_method
+                type='method'
+                name='stop'
+                exec='/opt/JSCAPE_MFT_Server/server stop'
+                timeout_seconds='60'>
+                <method_context>
+                    <method_credential user='jscape' group='jscape' />
+                </method_context>
+        </exec_method>
+
+        <stability value='Unstable' />
+</service>
+</service_bundle>

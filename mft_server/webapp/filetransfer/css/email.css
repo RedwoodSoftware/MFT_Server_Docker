@@ -1,0 +1,22 @@
+#compose {
+    padding: 0 1em;
+}
+#compose .recipients {
+    width: 90%;
+}
+#compose .sender {
+    width: 55%;
+}
+#compose #message, #compose #subject {
+    width: 99%;
+}
+#compose #filelist {
+    width: 98%;
+    height: 65px;
+    border: 1px solid #A5ACB2;
+    background-color: InfoBackground;
+    margin: 2px 0;
+    padding: 1px 0.3em;
+    overflow: auto;
+    overflow-y: scroll;
+}

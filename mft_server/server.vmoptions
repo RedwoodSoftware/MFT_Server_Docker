@@ -1,0 +1,6 @@
+-XX:+IgnoreUnrecognizedVMOptions
+-Xmx1024m
+-Dorg.apache.jasper.compiler.disablejsr199=true
+-XX:MaxPermSize=512m
+-XX:+UseConcMarkSweepGC
+-XX:+ExplicitGCInvokesConcurrent

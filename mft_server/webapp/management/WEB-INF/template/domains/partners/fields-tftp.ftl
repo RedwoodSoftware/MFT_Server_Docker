@@ -1,0 +1,7 @@
+<fieldset class="large">
+    <legend><@i18n.message key="TradingPartners.legend.connection" /></legend>
+    <div><@form.host name="host" required=true description=i18n.text("TradingPartners.label.host.description") example=i18n.text("TradingPartners.label.host.example")><@i18n.message key="TradingPartners.label.host" /></@></div>
+    <div><@form.port name="port" description=i18n.text("TradingPartners.label.port.description") example=i18n.text("TradingPartners.TFTP.label.port.example")><@i18n.message key="TradingPartners.label.port" /></@></div>
+    <div><@form.number name="retransmitinterval" maxlength=3 description=i18n.text("TradingPartners.TFTP.label.retransmitInterval.description") example=i18n.text("TradingPartners.TFTP.label.retransmitInterval.example")><@i18n.message key="TradingPartners.TFTP.label.retransmitInterval" /></@>&nbsp;<@i18n.message key="TradingPartners.TFTP.label.retransmitInterval.unit" /></div>
+    <div><@form.number name="retransmitattempts" maxlength=3 description=i18n.text("TradingPartners.TFTP.label.retransmitAttempts.description") example=i18n.text("TradingPartners.TFTP.label.retransmitAttempts.example")><@i18n.message key="TradingPartners.TFTP.label.retransmitAttempts" /></@></div>
+</fieldset>

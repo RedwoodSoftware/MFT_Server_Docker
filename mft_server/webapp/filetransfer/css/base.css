@@ -1,0 +1,270 @@
+body {
+    color: #000;
+    background: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 84%;
+    margin: 0;
+    padding: 0;
+}
+#header {
+    min-height: 85px;
+}
+#header h1 {
+    float: left;
+    font-size: 100%;
+    font-weight: 300;
+    line-height: 1.4;
+    margin: 0;
+}
+#header .skip {
+    position: absolute;
+    top: auto;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+#content {
+    clear: both;
+}
+#footer {
+    clear: both;
+}
+#logo {
+    border: 0 none;
+}
+.tenant-logo {
+    max-width: 280px;
+    max-height: 80px;
+}
+#logininfo {
+    float: right;
+    text-align: right;
+}
+.wrapper, div.wrap {
+    padding: 1em;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.4em; }
+h1, h2 { margin-top: 0; }
+
+a img {
+    border: 0 none;
+}
+
+a, a:link, a:visited, span.ln {
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover, span.ln:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.disabled, .disabled * {
+    color: gray !important;
+    cursor: default;
+}
+
+/** Alerts */
+.alertbox {
+    border: 1px solid #E6E6E6;
+    background-color: #F6F6F6;
+    margin: .7em 0;
+    padding: .5em .6em;
+}
+
+.alertbox p {
+    margin: 0;
+    padding: 0;
+}
+
+.alertbox h3 {
+    color: green;
+    font-size: 100%;
+    min-height: 16px;
+    margin: 0;
+    padding-left: 20px;
+    background-image: url(../img/success.gif);
+    background-repeat: no-repeat;
+}
+
+.error h3 {
+    color: #af0000;
+    background-image: url(../img/error.gif);
+}
+.js-enable {
+    color: #af0000;
+    font-weight: bold;
+    text-align: center;
+    margin: 1em auto;
+}
+.spacer {
+    display: block;
+    clear: both;
+    height: 1px;
+    line-height: 1px;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+.small {
+    font-size: small;
+}
+.hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Forms */
+form input {
+    margin: 1px;
+    font-family: Arial, Helvetica, sans-serif; /* IE width fix */
+}
+
+form .required {
+    color: #af0000;
+    padding-left: .2em;
+    cursor: help;
+}
+
+button {
+    padding: 0;
+    margin: 0;
+    /*padding: 0 .5em;*/
+}
+
+input[type="submit"],
+input[type="button"] {
+    padding: 1px 1em;
+}
+
+label {
+    padding-right: .6em;
+}
+
+label .req {
+    color: #af0000;
+    padding-left: .2em;
+}
+
+fieldset {
+    padding: 1em;
+    margin-bottom: 1.2em;
+    border: 1px solid #BCBCBC;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+fieldset legend {
+    color: #000;
+    font-weight: bold;
+}
+
+fieldset.radiogroup {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+fieldset .hidden-label {
+    position: absolute;
+    top: auto;
+    left: -10000px;
+    clip: rect(1px 1px 1px 1px);
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+fieldset.pane {
+    border: none;
+    margin: 0;
+}
+
+fieldset .hidden-label {
+    position: absolute;
+    top: auto;
+    left: -10000px;
+    clip: rect(1px 1px 1px 1px);
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+/** Tables */
+table {
+    border-collapse: collapse;
+    border: none;
+}
+
+table th {
+    color: #222;
+    background-color: #F6F6F6;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+table td.vt {
+    vertical-align: top !important;
+}
+
+table td.al {
+    text-align: left !important;
+}
+
+table td.ar {
+    text-align: right !important;
+}
+
+table td.ac {
+    text-align: center !important;
+}
+
+table td.nw {
+    white-space: nowrap;
+}
+
+.desc {
+    font-size: 84%;
+    color: #595959;
+}
+.error-message {
+    font-size: 150%;
+    font-weight: 700;
+    color: #af0000;
+}
+.ac {
+    text-align: center;
+}
+.ar {
+    text-align: right;
+}
+.hidden {
+    display: none;
+}
+.l-btn {
+    min-width: 75px;
+}
+.textbox-button.l-btn,
+.datagrid-toolbar .l-btn,
+.datagrid-row-toolbar .l-btn,
+.panel-tool .l-btn,
+.pagination .l-btn,
+#searchresultsbar .l-btn,
+#breadcrumbs .l-btn {
+    min-width: initial;
+}

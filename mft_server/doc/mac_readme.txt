@@ -1,0 +1,1 @@
+1. Open up a terminal shell in Mac OS X.2. Type "sudo su" command3. Type "cd /Library/StartupItems/ActiveMFT Server"4. Using vi, open the file named "ActiveMFT Server"5. Add quotes around the path so it appears as follows:"/Applications/ActiveMFT Server/server"6. Restart the Mac. Upon restarting the ActiveMFT Server service will come up automatically.

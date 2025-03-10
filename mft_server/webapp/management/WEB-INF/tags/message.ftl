@@ -1,0 +1,3 @@
+<#function text key args=[] escapeXml=true><#-- @ftlvariable name="args" type="java.lang.Object[]" --><#if escapeXml><#local escaped_args=[] /><#if args?is_enumerable><#list args as item><#if item?is_string><#local escaped_args=escaped_args + [item?html] /><#else><#local escaped_args=escaped_args + [item] /></#if></#list><#elseif args?is_string><#local escaped_args=[args?html] /></#if><#local args=escaped_args/></#if><#return (messages.getString(key, args))!key/></#function>
+
+<#macro message key args=[] escapeXml=true>${text(key, args, escapeXml)}</#macro>

@@ -1,0 +1,28 @@
+# Document Viewer supported MIME types.
+# MIME type to file extension mappings.
+#
+application/msword                                                        doc DOC
+application/pdf                                                           pdf PDF
+application/rtf                                                           rtf RTF
+application/vnd.ms-excel                                                  xls XLS
+application/vnd.ms-powerpoint                                             ppt PPT
+application/vnd.oasis.opendocument.graphics                               odg
+application/vnd.oasis.opendocument.presentation                           odp
+application/vnd.oasis.opendocument.spreadsheet                            ods
+application/vnd.oasis.opendocument.text                                   odt
+application/vnd.openxmlformats-officedocument.presentationml.presentation pptx
+application/vnd.openxmlformats-officedocument.wordprocessingml.document   docx
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet         xlsx
+application/vnd.sun.xml.calc                                              sxc
+application/vnd.sun.xml.impress                                           sxi
+application/vnd.sun.xml.writer                                            sxw
+# application/wordperfect
+application/x-shockwave-flash                                             swf SWF
+image/jpeg                                                                jpeg jpg jpe JPG JPEG JPE
+image/gif                                                                 gif GIF
+image/png                                                                 png PNG
+text/comma-separated-values                                               csv
+text/csv                                                                  csv CSV
+text/html                                                                 html htm HTML HTM
+text/plain                                                                asc txt ASC TXT TEXT
+text/tab-separated-values                                                 tsv TSV

@@ -1,0 +1,32 @@
+<@compress single_line=true>
+{
+DIALOG_BUTTON_SAVE: '${i18n.text("Application.button.save")?js_string}',
+DIALOG_BUTTON_SAVE_AND_RUN: '${i18n.text("Application.button.saveAndRun")?js_string}',
+APPLICATION_PROTOCOL_AFTP: '${i18n.text("Application.protocol.AFTP")?js_string}',
+APPLICATION_PROTOCOL_FTP: '${i18n.text("Application.protocol.FTP")?js_string}',
+APPLICATION_PROTOCOL_IMPLICIT_FTPS: '${i18n.text("Application.protocol.FTPS_IMPLICIT")?js_string}',
+APPLICATION_PROTOCOL_EXPLICIT_FTPS: '${i18n.text("Application.protocol.FTPS_EXPLICIT")?js_string}',
+APPLICATION_PROTOCOL_SFTP: '${i18n.text("Application.protocol.SFTP")?js_string}',
+APPLICATION_PROTOCOL_HTTP: '${i18n.text("Application.protocol.HTTP")?js_string}',
+APPLICATION_PROTOCOL_HTTPS: '${i18n.text("Application.protocol.HTTPS")?js_string}',
+APPLICATION_HOST_ALL_IPV4: '${i18n.text("Application.host.anyIPv4")?js_string}',
+APPLICATION_HOST_ALL_IPV6: '${i18n.text("Application.host.anyIPv6")?js_string}',
+GLOBAL_SERVICES_ADD_BUTTON_SUBMIT: '${i18n.text("GlobalServices.AddDialog.button.submit")?js_string}',
+GLOBAL_SERVICES_ADD_BUTTON_SUBMIT_AND_START: '${i18n.text("GlobalServices.AddDialog.button.submitAndStart")?js_string}',
+GLOBAL_SERVICES_EDIT_TITLE: '${i18n.text("GlobalServices.EditDialog.title")?js_string}',
+GLOBAL_SERVICES_CONFIRM_DELETE_TITLE: '${i18n.text("GlobalServices.DeleteDialog.title")?js_string}',
+GLOBAL_SERVICES_CONFIRM_DELETE_MESSAGE: '${i18n.text("GlobalServices.DeleteDialog.message")?js_string}',
+GLOBAL_SERVICES_CONFIRM_STOP_TITLE: '${i18n.text("GlobalServices.ConfirmStopDialog.title")?js_string}',
+GLOBAL_SERVICES_CONFIRM_STOP_MESSAGE: '${i18n.text("GlobalServices.ConfirmStopDialog.message")?js_string}',
+GLOBAL_SERVICES_STATE_STARTED: '${i18n.text("GlobalServices.state.STARTED")?js_string}',
+GLOBAL_SERVICES_STATE_STOPPED: '${i18n.text("GlobalServices.state.STOPPED")?js_string}',
+GLOBAL_SERVICES_STATE_ERROR: '${i18n.text("GlobalServices.state.ERROR")?js_string}',
+GLOBAL_SERVICES_ERROR_BAD_HOST: '${i18n.text("GlobalServices.Error.badHost")?js_string}',
+GLOBAL_SERVICES_ERROR_BAD_PASSIVE_IP: '${i18n.text("GlobalServices.Error.invalidPassiveIp")?js_string}',
+GLOBAL_SERVICES_ERROR_BAD_SFTP_VERSION: '${i18n.text("GlobalServices.Error.badSftpVersion")?js_string}',
+GLOBAL_SERVICES_ERROR_BAD_ADDRESS: '${i18n.text("GlobalServices.Error.addressAlreadyInUse")?js_string}',
+GLOBAL_SERVICES_TEMPLATE_SFTP_DETAILS: '${i18n.text("GlobalServices.details.SFTP")?js_string}',
+GLOBAL_SERVICES_TEMPLATE_HTTP_DETAILS: '${i18n.text("GlobalServices.details.HTTP")?js_string}',
+GLOBAL_SERVICES_TEMPLATE_DISABLED: '${i18n.text("GlobalServices.details.disabled")?js_string}'
+}
+</@compress>

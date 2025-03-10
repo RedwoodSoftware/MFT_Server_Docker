@@ -1,0 +1,1 @@
+<noscript><div class="error-message ac"><h1><@i18n.message key="Application.message.javascriptDisabled" /></h1></div></noscript>

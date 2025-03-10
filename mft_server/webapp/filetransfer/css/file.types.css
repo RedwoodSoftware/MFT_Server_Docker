@@ -1,0 +1,16 @@
+.filelist .folder, .filelist .file, .filelist #cdup, .filelist .cdup { background-position: left center; background-repeat: no-repeat; padding-left: 20px; margin-left: 7px; cursor: pointer; }
+.filelist .folder.over, .filelist .file.over, .filelist #cdup.over, .filelist .cdup.over { outline: 1px dotted #000; }
+.filelist #cdup, .filelist .cdup  { font-weight: bold; background-image: url(../img/up.gif); }
+.filelist .folder { background-image: url(../img/folder.gif); }
+.filelist .folder.encrypt { background-image: url(../img/folder_lock.gif); }
+.filelist .file { background-image: url(../img/document.gif); }
+.filelist .file.txt { background-image: url(../img/document.gif); }
+.filelist .file.web { background-image: url(../img/document.gif); }
+.filelist .file.doc { background-image: url(../img/document.gif); }
+.filelist .file.pdf { background-image: url(../img/document.gif); }
+.filelist .file.gif { background-image: url(../img/document.gif); }
+.filelist .file.jpg { background-image: url(../img/document.gif); }
+.filelist .file.picture { background-image: url(../img/document.gif); }
+.filelist .file.audio { background-image: url(../img/document.gif); }
+.filelist .file.video { background-image: url(../img/document.gif); }
+.filelist .datagrid-body td { border-right:1px dotted transparent; border-bottom:1px dotted transparent; }

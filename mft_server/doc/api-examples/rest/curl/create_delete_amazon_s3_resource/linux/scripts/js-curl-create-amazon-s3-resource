@@ -1,0 +1,205 @@
+#!/bin/bash
+
+## This example demonstrates how to create a FTP network storage using the server API.
+echo -e '\n';
+echo "#########################################################################################"
+echo "This example demonstrates how to create a Amazon S3 network storage using the server API."
+echo "#########################################################################################"
+
+
+### Read from the user
+echo -e '\n';
+echo "#######################"
+echo "Enter Basic Parameters"
+echo "######################"
+echo "Enter protocol:"
+read proto
+echo "Enter server REST host:"
+read jscapehost
+echo "Enter server REST port:"
+read jscapemanagmentport
+echo "Enter REST username:"
+read username
+echo "Enter REST password:"
+read password
+echo "Enter domain name:"
+read domain
+echo "Enter network storage name:"
+read nsName
+
+echo -e '\n';
+echo "###########################"
+echo "Choose Authentication Type"
+echo "###########################"
+
+echo "Select the authentication type:"
+select aType in "Credentials" "IAM_Role";
+do
+    echo "Selected authentication type: $aType"
+    break
+done
+
+if [[ "$aType" = "Credentials" ]]; then
+echo "Enter the credentials"   
+echo "Enter s3 key:"
+read s3Key
+echo "Enter s3 password:"
+read s3Password
+fi
+
+echo -e '\n';
+echo "#############"
+echo "Choose Region"
+echo "#############"
+
+echo "Choose region:"
+select region in "AWS GovCloud (US)" "US East (Ohio)" "US East (N. Virginia)" "US West (N. California)" "US West (Oregon)" "Asia Pacific (Mumbai)" "Asia Pacific (Seoul)" "Asia Pacific (Singapore)" "Asia Pacific (Sydney)" "Asia Pacific (Tokyo)" "Canada (Central)" "Europe (Frankfurt)" "Europe (Ireland)" "Europe (London)" "Europe (Paris)" "South America (São Paulo)" "China (Beijing)" "China (Ningxia)";
+do
+    echo "Selected region: $region"
+    break
+done
+
+### Assign region value for the post method
+if [[ "$region" = "AWS GovCloud (US)" ]]; then
+cRegion="us-gov-west-1";
+fi
+
+if [[ "$region" = "US East (Ohio)" ]]; then
+cRegion="us-east-2";
+fi
+
+if [[ "$region" = "US East (N. Virginia)" ]]; then
+cRegion="us-east-1";
+fi
+
+if [[ "$region" = "US West (N. California)" ]]; then
+cRegion="us-west-1";
+fi
+
+if [[ "$region" = "US West (Oregon)" ]]; then
+cRegion="us-west-2";
+fi
+
+if [[ "$region" = "Asia Pacific (Mumbai)" ]]; then
+cRegion="ap-south-1";
+fi
+
+if [[ "$region" = "Asia Pacific (Seoul)" ]]; then
+cRegion="ap-northeast-2";
+fi
+
+if [[ "$region" = "Asia Pacific (Singapore)" ]]; then
+cRegion="ap-southeast-1";
+fi
+
+if [[ "$region" = "Asia Pacific (Sydney)" ]]; then
+cRegion="ap-southeast-2";
+fi
+
+if [[ "$region" = "Asia Pacific (Tokyo)" ]]; then
+cRegion="ap-northeast-1";
+fi
+
+if [[ "$region" = "Canada (Central)" ]]; then
+cRegion="ca-central-1";
+fi
+
+if [[ "$region" = "Europe (Frankfurt)" ]]; then
+cRegion="eu-central-1";
+fi
+
+if [[ "$region" = "Europe (Ireland)" ]]; then
+cRegion="eu-west-1";
+fi
+
+if [[ "$region" = "Europe (London)" ]]; then
+cRegion="eu-west-2";
+fi
+
+if [[ "$region" = "Europe (Paris)" ]]; then
+cRegion="eu-west-3";
+fi
+
+if [[ "$region" = "South America (São Paulo)" ]]; then
+cRegion="sa-east-1";
+fi
+
+if [[ "$region" = "China (Beijing)" ]]; then
+cRegion="cn-north-1";
+fi
+
+if [[ "$region" = "China (Ningxia)" ]]; then
+cRegion="cn-northwest-1";
+fi
+
+
+echo "The sub-region is : $cRegion"
+
+echo "Enter Remote Directory:"
+read remoteDir
+
+
+### make a cookie file to store the session id and get it through get_session_id()
+cookie_file=`mktemp /tmp/cookie.XXXXXXXXXX`
+
+get_session_id() {
+   grep JSESSIONID $cookie_file | awk '{printf "%s=%s",$6,$7}'
+}
+
+## get CSRF token
+csrftoken=`curl -s -k -c "${cookie_file}" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+### get session cookie
+sid=$(get_session_id ${cookie_file})
+
+
+## Login to MFT Server
+loginResponse=$(curl -s -k -b "$sid" -c "$cookie_file" -w "%{http_code}" -o /dev/null -H "accept: */*" -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "Content-type: application/json" -X POST -d "{\"username\":\"$username\", \"password\":\"$password\"}" $proto://$jscapehost:$jscapemanagmentport/rest/management/login)
+
+## check server reachable
+if [[ "$loginResponse" -eq 000 ]]; then 
+echo -e '\n';
+echo "Could not connect to the server..";  
+else
+
+if [[ "$loginResponse" -eq 204 ]]; then 
+echo -e '\n';
+echo "Login success. Proceeding to create the resource ..";  
+
+### get session cookie again
+sid=$(get_session_id ${cookie_file})
+
+## get CSRF token again
+csrftoken=`curl -s -k -b "$sid" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+## Create amazon s3 netowork storage
+addResourceResponse=$(curl -s -o /dev/null -k -b "$sid" -w "%{http_code}" -o /dev/null -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "accept: application/json" -H "Content-type: application/json" -X POST -d "{\"protocol\":\"AmazonS3\",\"name\":\"$nsName\",\"encryptionType\":\"NONE\",\"kmsKeyId\":null,\"username\":\"$s3Key\",\"password\":\"$s3Password\",\"authenticationType\":\"$aType\",\"region\":\"$cRegion\",\"requesterPaymentRequired\":false,\"remoteDirectory\":{\"@type\":\"REMOTE_PATH\",\"path\":\"$remoteDir\"},\"logDirectory\":null,\"tags\":[],\"usingCredentials\":false,\"timeToLive\":null,\"host\":\"\"}" $proto://$jscapehost:$jscapemanagmentport/rest/management/reverse-proxies/$domain)
+
+## success creation check
+if [[ "$addResourceResponse" -eq 409 ]]; then 
+echo -e '\n'; 
+echo "AmazonS3 Storage already exists.. Try other name .."  
+fi
+
+## success creation check
+if [[ "$addResourceResponse" -eq 201 ]]; then 
+echo -e '\n'; 
+echo "AmazonS3 Storage created successfully.."  
+fi
+## failed creation check
+if [[ "$addResourceResponse" -eq 404 ]]; then 
+echo -e '\n'; 
+echo "Response Code : 404 AmazonS3 Storage creation failed, Recheck the parameters.."  
+fi
+else
+echo -e '\n';   
+echo "Login failed. Re-check protocol,host,port,user and password";  
+fi
+fi
+
+
+### logout
+curl -s -k -b "$sid" -H "x-js-at: $csrftoken" -X POST $proto://$jscapehost:$jscapemanagmentport/rest/management/logout
+
+### delete cookie file
+rm $cookie_file

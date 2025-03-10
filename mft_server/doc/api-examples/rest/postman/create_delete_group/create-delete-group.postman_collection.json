@@ -1,0 +1,675 @@
+{
+	"info": {
+		"_postman_id": "7e972b42-ee28-4a67-a074-a1b96a0dd420",
+		"name": "create-delete-group",
+		"description": "This folder contains examples on how to login to REST Server API and create / delete a group\n\n**Create Group**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Create Group (API - Create group ).\n5. Logout from MFT Server (API - Logout request ).\n    \n\n**Delete Group**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Delete Group (API - Delete group ).\n5. Logout from MFT Server (API - Logout request ).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6922053"
+	},
+	"item": [
+		{
+			"name": "create group",
+			"item": [
+				{
+					"name": "API - Get CSRF token before login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token before login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Login request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.request.body && pm.request.body.raw) pm.request.body.raw = pm.request.body.raw.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g,'');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/login",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"login"
+							]
+						},
+						"description": "API Request to login into MFT Server.\n\nModify the server username and password on the json body.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Get CSRF token after login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token after login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Create group",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.request.body && pm.request.body.raw) pm.request.body.raw = pm.request.body.raw.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g,'');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "/* Modify the JSON request body parameters\nname, path and realPath as required\nNOTE : realPath should represent the server where MFT Server is running. */\n{\n    \"name\": \"testgrp\",\n    \"resources\": [\n        {\n            \"path\": \"/testgrp\",\n            \"realPath\": \"/Users/test\",\n            \"accessPermissions\": {\n                \"fileDownloadingAllowed\": true,\n                \"fileUploadingAllowed\": true,\n                \"fileDeletionAllowed\": true,\n                \"fileAppendingAllowed\": true,\n                \"fileListingAllowed\": true,\n                \"fileRenamingAllowed\": true,\n                \"directoriesListingAllowed\": true,\n                \"directoryMakingAllowed\": true,\n                \"directoryDeletionAllowed\": true,\n                \"subdirectoriesBrowsingAllowed\": true\n            },\n            \"secured\": false,\n            \"denied\": false,\n            \"indexable\": true,\n            \"createIfNotExists\": true,\n            \"pgpEncryption\": {\n                \"keyProvider\": {\n                    \"file\": \"/.pgp/key.pub\",\n                    \"filePassword\": \"\"\n                },\n                \"enabled\": false\n            },\n            \"dataLossPrevention\": {\n                \"rules\": [],\n                \"enabled\": false\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/groups/{{domainName}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"groups",
+								"{{domainName}}"
+							]
+						},
+						"description": "- API Request to add a group.\n    \n\nModify the JSON request body parameters\n\n- name, path and realPath as required\n- **NOTE** : realPath should represent the server where MFT Server is running\n    \n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)\n- domainName (default - testdomain)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Logout request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/logout",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"logout"
+							]
+						},
+						"description": "API Request to logout from MFT Server\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains examples on how to login to REST Server API and create a group.\n\n**Create Group**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Create Group (API - Create group ).\n5. Logout from MFT Server (API - Logout request )."
+		},
+		{
+			"name": "delete group",
+			"item": [
+				{
+					"name": "API - Get CSRF token before login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token before login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Login request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.request.body && pm.request.body.raw) pm.request.body.raw = pm.request.body.raw.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g,'');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/login",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"login"
+							]
+						},
+						"description": "API Request to login into MFT Server.\n\nModify the server username and password on the json body.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Get CSRF token after login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"csrf-token\", \"\");",
+									"var jsonData= responseBody;",
+									"pm.collectionVariables.set(\"csrf-token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/csrf-token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"csrf-token"
+							]
+						},
+						"description": "API Request to get the CSRF token after login to the server.\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Delete group",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/groups/{{domainName}}/{{groupName}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"groups",
+								"{{domainName}}",
+								"{{groupName}}"
+							]
+						},
+						"description": "- API Request to delete the group.\n    \n\nModify the collection variables as required, by default the below are the values configured.\n\n- domainName (default - testdomain)\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)\n- groupName (default - testgrp)"
+					},
+					"response": []
+				},
+				{
+					"name": "API - Logout request",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true,
+							"connection": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "x-js-at",
+								"value": "{{csrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{serverhost}}:{{servermanagementport}}/rest/management/logout",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{serverhost}}"
+							],
+							"port": "{{servermanagementport}}",
+							"path": [
+								"rest",
+								"management",
+								"logout"
+							]
+						},
+						"description": "API Request to logout from MFT Server\n\nModify the collection variables as required, by default the below are the values configured.\n\n- serverhost (default - localhost)\n- servermanagementport (default-11880)\n- protocol (default - http)"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains examples on how to login to REST Server API and delete a group.\n\n**Delete Group**\n\nSteps to acheive it\n\n1. Get CSRF token before login (API - Get CSRF token before login).\n2. Login into MFT server (API - Login request ).\n3. Get CSRF token after login (API - Get CSRF token after login).\n4. Delete Group (API - Delete group ).\n5. Logout from MFT Server (API - Logout request )."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domainName",
+			"value": "testdomain",
+			"type": "string"
+		},
+		{
+			"key": "serverhost",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "servermanagementport",
+			"value": "11880",
+			"type": "string"
+		},
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "csrf-token",
+			"value": ""
+		},
+		{
+			"key": "groupName",
+			"value": "testgrp",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,80 @@
+#!/bin/bash
+
+## Message
+
+echo -e '\n';
+echo "#####################################################################"
+echo "This example demonstrates how to start a domain using the server API."
+echo "#####################################################################"
+
+### Read from the user
+echo -e '\n';
+echo "Enter protocol:"
+read proto
+echo "Enter server REST host:"
+read jscapehost
+echo "Enter server REST port:"
+read jscapemanagmentport
+echo "Enter username:"
+read username
+echo "Enter password:"
+read password
+echo "Enter domain name to start:"
+read domain
+
+### make a cookie file to store the session id and get it through get_session_id()
+cookie_file=`mktemp /tmp/cookie.XXXXXXXXXX`
+
+get_session_id() {
+   grep JSESSIONID $cookie_file | awk '{printf "%s=%s",$6,$7}'
+}
+
+### get CSRF token
+csrftoken=`curl -s -k -c "${cookie_file}" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+### get session cookie
+sid=$(get_session_id ${cookie_file})
+
+
+## Login to MFT Server
+loginResponse=$(curl -s -k -b "$sid" -c "$cookie_file" -w "%{http_code}" -o /dev/null -H "accept: */*" -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "Content-type: application/json" -X POST -d "{\"username\":\"$username\", \"password\":\"$password\"}" $proto://$jscapehost:$jscapemanagmentport/rest/management/login)
+
+## check server reachable
+if [[ "$loginResponse" -eq 000 ]]; then 
+echo -e '\n';
+echo "Could not connect to the server..";  
+else
+
+if [[ "$loginResponse" -eq 204 ]]; then 
+echo -e '\n';
+echo "Login success. Proceeding to start the domain ..";  
+
+### get session cookie again
+sid=$(get_session_id ${cookie_file})
+
+## get CSRF token again
+csrftoken=`curl -s -k -b "$sid" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+## start domain
+startDomainResponse=$(curl -s -k -b "$sid" -w "%{http_code}" -o /dev/null -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "accept: application/json" -H "Content-type: application/json" -X POST $proto://$jscapehost:$jscapemanagmentport/rest/management/domains/$domain/start)
+
+## check domain start response
+if [[ "$startDomainResponse" -eq 204 ]]; then 
+echo -e '\n'; 
+echo "Domain started successfully.."; 
+else
+echo -e '\n'; 
+echo "Invalid domain name or domain start failed.."; 
+fi
+else
+echo -e '\n';   
+echo "Login failed. Re-check protocol,host,port,user and password";   
+fi
+fi
+
+
+### logout
+curl -s -k -b "$sid" -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "Content-type: application/json" -X POST $proto://$jscapehost:$jscapemanagmentport/rest/management/logout
+
+### delete cookie file
+rm $cookie_file

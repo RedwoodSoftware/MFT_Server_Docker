@@ -1,0 +1,1 @@
+<noscript><div class="error-message ac"><@i18n.message key="Application.Error.javascriptDisabed" /></div></noscript>

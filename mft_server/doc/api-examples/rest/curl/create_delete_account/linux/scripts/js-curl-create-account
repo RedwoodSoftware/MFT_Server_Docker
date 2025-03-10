@@ -1,0 +1,93 @@
+#!/bin/bash
+
+echo -e '\n';
+echo "#########################################################################"
+echo "This example demonstrates how to add a user account using the server API."
+echo "#########################################################################"
+
+### Read from the user
+echo -e '\n';
+echo "Enter protocol:"
+read proto
+echo "Enter server REST host:"
+read jscapehost
+echo "Enter server REST port:"
+read jscapemanagmentport
+echo "Enter REST username:"
+read username
+echo "Enter REST password:"
+read password
+echo "Enter domain name:"
+read domain
+echo "Enter account name:"
+read accName
+echo "Enter account login name:"
+read accLogin
+echo "Enter account login password:"
+read accLoginPassword
+
+
+
+
+### make a cookie file to store the session id and get it through get_session_id()
+cookie_file=`mktemp /tmp/cookie.XXXXXXXXXX`
+
+get_session_id() {
+   grep JSESSIONID $cookie_file | awk '{printf "%s=%s",$6,$7}'
+}
+
+
+## get CSRF token
+csrftoken=`curl -s -k -c "${cookie_file}" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+### get session cookie
+sid=$(get_session_id ${cookie_file})
+
+
+## Login to MFT Server
+loginResponse=$(curl -s -k -b "$sid" -c "$cookie_file" -w "%{http_code}" -o /dev/null -H "accept: */*" -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "Content-type: application/json" -X POST -d "{\"username\":\"$username\", \"password\":\"$password\"}" $proto://$jscapehost:$jscapemanagmentport/rest/management/login)
+
+## check server reachable
+if [[ "$loginResponse" -eq 000 ]]; then 
+echo -e '\n';
+echo "Could not connect to the server..";  
+else
+
+if [[ "$loginResponse" -eq 204 ]]; then 
+echo -e '\n';
+echo "Login success. Proceeding to add account ..";  
+
+### get session cookie again
+sid=$(get_session_id ${cookie_file})
+
+## get CSRF token again
+csrftoken=`curl -s -k -b "$sid" -H "Content-type: application/json" $proto://$jscapehost:$jscapemanagmentport/rest/management/csrf-token`
+
+
+## Add account
+addAccountResponse=$(curl -s -k -b "$sid" -w "%{http_code}" -o /dev/null -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "accept: application/json" -H "Content-type: application/json" -X POST -d "{\"username\":\"$accName\",\"login\":\"$accLogin\",\"password\":\"$accLoginPassword\",\"groups\":[],\"emailAddress\":\"\",\"company\":null,\"phone\":{\"code\":\"\",\"number\":\"\",\"extension\":\"\"},\"bindedKeys\":[],\"owner\":null,\"expirationDate\":null,\"uploadsQuota\":null,\"downloadsQuota\":null,\"transfersQuota\":null,\"resources\":[{\"path\":\"\",\"accessPermissions\":{\"fileDownloadingAllowed\":true,\"fileUploadingAllowed\":true,\"fileOverwritingAllowed\":true,\"fileDeletionAllowed\":true,\"fileAppendingAllowed\":true,\"fileListingAllowed\":true,\"fileRenamingAllowed\":true,\"fileSharingAllowed\":true,\"directoriesListingAllowed\":true,\"directoryMakingAllowed\":true,\"directoryDeletionAllowed\":true,\"subdirectoriesBrowsingAllowed\":true},\"secured\":false,\"denied\":false,\"indexable\":true,\"realPath\":\"%installdir%/users/%domain%/%username%\",\"createIfNotExists\":true,\"pgpEncryption\":{\"keyProvider\":{\"file\":\"/.pgp/key.pub\"},\"enabled\":false},\"dataLossPrevention\":{\"icapAccess\":null,\"enabled\":false,\"rules\":[]}}],\"administration\":null,\"secured\":false,\"enabled\":true,\"passwordChangingAllowed\":true,\"emailFileTransferAllowed\":true,\"adHocTransferPermissions\":[\"EXTERNAL\"],\"usePhoneAuthentication\":false,\"ignorePasswordAgingRules\":false,\"uiTheme\":null,\"customUiTheme\":null,\"allowedProtocols\":null,\"loginRedirection\":{\"target\":\"storage\"},\"lastLoginDate\":null,\"ipAccessVerifier\":{},\"maxUploadsPerSession\":null,\"maxDownloadsPerSession\":null,\"webPublicKeyAuthenticationAvailable\":true,\"webOpenPgpEncryptionAvailable\":true,\"webQuotasAvailable\":true,\"webContactsAvailable\":true,\"webAdHocActivityAvailable\":true,\"webDropZonesAvailable\":true,\"webAccountLinkAvailable\":true,\"webPersonalInformationAvailable\":true,\"sftpPublicKeyAuthenticationRequired\":false,\"passwordExpirationNotification\":null,\"notes\":\"\",\"tags\":[],\"creationDate\":1675153478483,\"version\":1,\"passwordDate\":1675153478476,\"maxTransferRate\":null}" $proto://$jscapehost:$jscapemanagmentport/rest/management/accounts/$domain)
+
+## Already exists check
+if [[ "$addAccountResponse" -eq 409 ]]; then
+echo -e '\n';
+echo "Login already exists .. Try other value"
+fi
+
+## Success check
+if [[ "$addAccountResponse" -eq 201 ]]; then 
+echo -e '\n';
+echo "Account created successfully.."  
+fi
+
+else
+echo -e '\n';   
+echo "Login failed. Re-check protocol,host,port,user and password";  
+fi
+fi
+
+
+### logout
+curl -s -k -b "$sid" -H "x-js-at: $csrftoken" -H "X-Requested-With: XMLHttpRequest" -H "Content-type: application/json" -X POST $proto://$jscapehost:$jscapemanagmentport/rest/management/logout
+
+### delete cookie file
+rm $cookie_file
