@@ -1,28 +1,40 @@
 services:
     mft_server:
+        # Update to reflect the desired version if not the latest release
         image: "public.ecr.aws/s9n3l9g8/redwood/mft_server:latest"
         environment:
-            # Username to be created for intial administrator access
-            JSCAPE_ADMIN_USER: "nick"
-            # Password to be assigned to that initial administrator
+            # Username to be created for intial JSCAPE MFT Server administrator access
+            JSCAPE_ADMIN_USER: ""
+            # Password to be assigned to that initial JSCAPE MFT Server administrator
             JSCAPE_ADMIN_PASSWORD: ${JSCAPE_ADMIN_PASSWORD}
-            # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior to referencing in this compose file, this process will populate the schema into this empty database
-            JDBC_CONNECTION_STRING: "jdbc:postgresql://10.29.29.90:5432/mftnick"
-            # Username for accessing the database
-            JDBC_USER: "mftnick"
-            # Password for accessing the database
+            # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior deploying, this process will populate the JSCAPE MFT Server schema into this empty database
+            JDBC_CONNECTION_STRING: ""
+            # Username for accessing the database referenced in JDBC_CONNECTION_STRING
+            JDBC_USER: ""
+            # Password for accessing the database referenced in JDBC_CONNECTION_STRING
             JDBC_PASSWORD: ${JDBC_PASSWORD}
-            # Memory to assign to the JVM for MFT Server to be able to leverage UP TO. This number is in GB
-            SERVER_MEMORY: "2"
-            # Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane.
+            # Memory to assign to the JVM for MFT Server to be able to leverage. This is simply a number representing GB.
+            SERVER_MEMORY: "4"
+            # OPTIONAL AND ONLY NEEDED DURING UPGRADE: Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane if properly maintained via docker volumes.
             PREV_VERSION: ""
-            # Name of the domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
-            JSCAPE_ENV_NAME: "nick"
+            # Name of the JSCAPE MFT Server domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
+            JSCAPE_DOMAIN_NAME: ""
+        # Please note that not all ports are needed and if you do not plan on using them, feel free to omit from your compose file.
         ports:
-            # Port mapping for admin HTTP interface (only one of the two is required but both can be used)
-            - "11880:11880"
-            # Port mapping for admin HTTPS interface (only one of the two is required but both can be used)
-            - "11443:11443"
+            # Port mapping for admin HTTP interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTP_PORT environment variable
+            - 11880:11880
+            # Port mapping for admin HTTPS interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTPS_PORT environment variable
+            - 11443:11443
+            # Port mapping for SFTP connections
+            - 22:22
+            # Port mapping for HTTPS Web Client interface (only one of the two is required but both can be used between 80 and 443)
+            - 443:443
+            # Port mapping for HTTP Web Client interface (only one of the two is required but both can be used between 80 and 443)
+            - 80:80
+            # Port mapping for AFTP connections
+            - 3305:3305/udp
+            # Port mapping for JSCAPE Agent connections
+            - 40025:40025
         volumes:
             # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
             - ./license.lic:/opt/mft_server/etc/license.lic
