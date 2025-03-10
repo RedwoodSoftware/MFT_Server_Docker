@@ -1,4 +1,0 @@
-- how to deal with existing database already? Don't want to try and init or does it not matter?
-- how to check if "configuration" has already taken place?
-  - Flag file?
-- 

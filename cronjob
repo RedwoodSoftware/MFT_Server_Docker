@@ -1,1 +1,0 @@
-0 23 * * * root /opt/mft_server/clamav-db-update.sh
