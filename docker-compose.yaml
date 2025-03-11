@@ -17,8 +17,6 @@ services:
             SERVER_MEMORY: "4"
             # OPTIONAL AND ONLY NEEDED DURING UPGRADE: Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane if properly maintained via docker volumes.
             PREV_VERSION: ""
-            # Name of the JSCAPE MFT Server domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
-            JSCAPE_DOMAIN_NAME: ""
         # Please note that not all ports are needed and if you do not plan on using them, feel free to omit from your compose file.
         ports:
             # Port mapping for admin HTTP interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTP_PORT environment variable
