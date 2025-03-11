@@ -13,13 +13,21 @@ ENV JSCAPE_DOMAIN_NAME=""
 ENV JSCAPE_MANAGEMENT_HTTP_PORT="11880"
 ENV JSCAPE_MANAGEMENT_HTTPS_PORT="11443"
 ENV LIBREOFFICE_INSTALL="N"
+ENV MAX_ATTEMPTS_STARTUP="3"
+ENV DB_SYNC_PERIOD="30"
 
 # Install a JRE. This step can be skipped if a JRE is already present in the base image.
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless curl unzip cron net-tools nano locales && apt-get clean \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
+
 COPY mft_server /opt/mft_server
 COPY --chmod=755 ./run.sh /opt/mft_server/run.sh
 
@@ -51,6 +59,6 @@ VOLUME /opt/mft_server/libs/ext
 VOLUME /opt/mft_server/data
 VOLUME /opt/mft_server/users
 
-#HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=3 CMD netstat -an | grep -E ":(${JSCAPE_MANAGEMENT_HTTP_PORT}|${JSCAPE_MANAGEMENT_HTTPS_PORT})\s" || exit 1
+HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=3 CMD netstat -an | grep -E ":(${JSCAPE_MANAGEMENT_HTTP_PORT}|${JSCAPE_MANAGEMENT_HTTPS_PORT})\s" || exit 1
 
 ENTRYPOINT [ "/opt/mft_server/run.sh" ]

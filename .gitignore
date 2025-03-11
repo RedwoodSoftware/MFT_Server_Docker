@@ -1,6 +1,7 @@
 # Environment variables
 .env
 .env.*
+!.env.*.example
 !.env.example
 
 # Large installation files
@@ -13,6 +14,9 @@
 
 # License files that may contain sensitive information
 *.lic
+
+# ignore development compose files.
+docker-compose.dev.yaml
 
 # Logs
 logs/

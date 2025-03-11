@@ -7,27 +7,25 @@
 # Function to check startup attempts and handle failure
 check_startup() {
     local attempt=0
-    local max_attempts=3
-    local port=$JSCAPE_MANAGEMENT_HTTP_PORT
 
-    while [ $attempt -lt $max_attempts ]; do
+    while [ $attempt -lt ${MAX_ATTEMPTS_STARTUP} ]; do
         if netstat -tulnp | grep -q ":${JSCAPE_MANAGEMENT_HTTPS_PORT}\|:${JSCAPE_MANAGEMENT_HTTP_PORT}"; then
             echo "Listener on port ${JSCAPE_MANAGEMENT_HTTPS_PORT} or ${JSCAPE_MANAGEMENT_HTTP_PORT} is enabled and running"
             echo "MFT Server Started"
             break
         else
-            echo "Listener on port ${JSCAPE_MANAGEMENT_HTTPS_PORT} or ${JSCAPE_MANAGEMENT_HTTP_PORT} is not running, attempt $((attempt+1)) of $max_attempts"
+            echo "Listener on port ${JSCAPE_MANAGEMENT_HTTPS_PORT} or ${JSCAPE_MANAGEMENT_HTTP_PORT} is not running, attempt $((attempt+1)) of ${MAX_ATTEMPTS_STARTUP}"
             echo "Netstat output for debugging:"
             netstat -tulnp
             attempt=$((attempt+1))
-            if [ $attempt -lt $max_attempts ]; then
+            if [ $attempt -lt ${MAX_ATTEMPTS_STARTUP} ]; then
                 sleep 10
             fi
         fi
     done
     
-    if [ $attempt -eq $max_attempts ]; then
-        echo "Listener on port $port failed to start after $max_attempts attempts"
+    if [ $attempt -eq ${MAX_ATTEMPTS_STARTUP} ]; then
+        echo "Listener on port ${JSCAPE_MANAGEMENT_HTTP_PORT} failed to start after ${MAX_ATTEMPTS_STARTUP} attempts"
         echo "MFT Server Failed to Start ---------------"
         echo "Server log file:"
         cat /opt/mft_server/var/log/server0.log
@@ -46,7 +44,7 @@ tail_server_log() {
 #######################################################
 
 echo "Establishing Database Connection..."
-./js-database-configuration -configure -url $JDBC_CONNECTION_STRING -user $JDBC_USER -password $JDBC_PASSWORD > /dev/null 2>&1
+./js-database-configuration -configure -url $JDBC_CONNECTION_STRING -user $JDBC_USER -password $JDBC_PASSWORD -sync-period ${DB_SYNC_PERIOD} > /dev/null 2>&1
 
 # Initialize the database tables
 if ./js-database-configuration -test > /dev/null; then
