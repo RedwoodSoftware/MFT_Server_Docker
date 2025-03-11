@@ -8,9 +8,9 @@ services:
             # Password to be assigned to that initial JSCAPE MFT Server administrator
             JSCAPE_ADMIN_PASSWORD: ${JSCAPE_ADMIN_PASSWORD}
             # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior deploying, this process will populate the JSCAPE MFT Server schema into this empty database
-            JDBC_CONNECTION_STRING: ""
+            JDBC_CONNECTION_STRING: "jdbc:postgresql://postgres:5432/mft_server"
             # Username for accessing the database referenced in JDBC_CONNECTION_STRING
-            JDBC_USER: ""
+            JDBC_USER: "jscape"
             # Password for accessing the database referenced in JDBC_CONNECTION_STRING
             JDBC_PASSWORD: ${JDBC_PASSWORD}
             # Memory to assign to the JVM for MFT Server to be able to leverage. This is simply a number representing GB.
@@ -46,12 +46,17 @@ services:
             - mft_server_data:/opt/mft_server/data
             - mft_server_data:/opt/mft_server/users
             - mft_server_data:/opt/mft_server/logs
+        depends_on:
+            - postgres
+        networks:
+            - jscape_network
+        restart: unless-stopped
 
     postgres:
         image: postgres:17
         container_name: postgres
         environment:
-            POSTGRES_USER: ""
+            POSTGRES_USER: "jscape"
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
             POSTGRES_DB: mft_server
         volumes:
