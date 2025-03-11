@@ -102,8 +102,8 @@ check_startup
 if [[ -n "$PREV_VERSION" || "$DB_INITIALIZED" == true ]]; then
     echo "Database initialized, domain should already be present..."
 elif [[ -z "$PREV_VERSION" && -n "$JSCAPE_DOMAIN_NAME" ]]; then
-    echo "Adding (JSCAPE_DOMAIN_NAME=$JSCAPE_DOMAIN_NAME) domain..."
-    ./js-adddomain -d "${JSCAPE_DOMAIN_NAME}" -ld "%installdir%/logs/%domain%"
+    echo "Adding $JSCAPE_DOMAIN_NAME domain..."
+    ./js-adddomain -d "$JSCAPE_DOMAIN_NAME" -ld "%installdir%/logs/%domain%"
 fi
 
 tail_server_log
