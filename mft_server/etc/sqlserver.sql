@@ -418,6 +418,7 @@ CREATE TABLE domain_trading_partner
     domainName VARCHAR(255)   NOT NULL,
     company    VARCHAR(255),
     protocol   VARCHAR(255)   NOT NULL,
+    server     VARCHAR(255)   DEFAULT NULL,
     version    VARCHAR(255)   NOT NULL,
     data       VARBINARY(MAX) NOT NULL,
     PRIMARY KEY (name, domainName)

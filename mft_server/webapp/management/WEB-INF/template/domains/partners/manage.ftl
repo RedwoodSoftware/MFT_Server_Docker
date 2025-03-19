@@ -1,6 +1,6 @@
 <div id="trading-partners-fields">
     <div data-options="region:'center',border:false">
-        <@form.datagrid name="tradingpartners" height="" columns=["name", "company", "protocol", "server", "tags"]; col><@i18n.message key="TradingPartners.column.${col}" /></@>
+        <@form.datagrid name="tradingpartners" height="" columns=["name", "company", "protocol", "server", "username", "tags"]; col><@i18n.message key="TradingPartners.column.${col}" /></@>
     </div>
 
     <div data-options="region:'south',border:false" class="layout-pane-bottom">

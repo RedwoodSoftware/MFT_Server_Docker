@@ -16,7 +16,8 @@
     <table role="grid"
            id="${fieldId}"
            aria-label="${fieldId}"
-           aria-describedby="${helpId}">
+           aria-describedby="${helpId}"
+           data-options="emptyMsg:'Empty entries list'">
         <thead><tr><th>Variable</th><th>Value</th></tr></thead>
         <#if field.defaultValue?has_content>
         <tbody>

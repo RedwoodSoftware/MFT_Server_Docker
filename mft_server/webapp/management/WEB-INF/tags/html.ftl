@@ -33,6 +33,7 @@
     <script type="text/javascript" src="${url("/js/jquery.easyui-1.10.19.min.js", base)}"${csp_nonce_attr}></script>
     <script type="text/javascript" src="${url("/js/jquery.easyui.findbar.js", base)}"${csp_nonce_attr}></script>
     <script type="text/javascript" src="${url("/js/jquery.easyui.ext.js", base)}"${csp_nonce_attr}></script>
+    <script type="text/javascript" src="${url("/js/datagrid-filter.js", base)}"${csp_nonce_attr}></script>
     <script type="text/javascript" src="${url("/js/ui.js", base)}"${csp_nonce_attr}></script>
     <#if csrfToken?? && csrfToken.value??><meta name="csrf-token" http-equiv="${csrfToken.name?html}" content="${csrfToken.value!""?html}" /></#if>
     <#if (model.heapAnalytics)??><@m.heap_analytics appId=model.heapAnalytics.id options=model.heapAnalytics.options /></#if>

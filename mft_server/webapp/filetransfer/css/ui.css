@@ -388,6 +388,11 @@ span.highlight {
     margin: 2px 0;
 }
 
+.tooltip-right,
+.tooltip-left {
+    max-width: 35%;
+}
+
 .tooltip-title {
     font-size: 120%;
     font-weight: 500;

@@ -9,8 +9,13 @@
             <dl class="group">
                 <dt class="checkbox"><@form.checkbox name="bindplain"><@i18n.message key="WebConfiguration.label.http" /></@></dt>
                 <dd><select name="plainhost"></select>&nbsp;&nbsp;<@form.port name="plainport" disabled=!permissions.webSettingsHttpPortAllowed readonly=!permissions.webSettingsHttpPortAllowed><@i18n.message key="WebConfiguration.label.httpPort" /> &nbsp;</@></dd>
-                <dt class="checkbox"><@form.checkbox name="bindsecure"><@i18n.message key="WebConfiguration.label.https" /></@></dt>
-                <dd><select name="securehost"></select>&nbsp;&nbsp;<@form.port name="secureport" disabled=!permissions.webSettingsHttpPortAllowed readonly=!permissions.webSettingsHttpPortAllowed><@i18n.message key="WebConfiguration.label.httpsPort" /> &nbsp;</@></dd>
+                <#if (permissions.webSettingsHttpsOnHostAllowed)!true>
+                    <dt class="checkbox"><@form.checkbox name="bindsecure"><@i18n.message key="WebConfiguration.label.https" /></@></dt>
+                    <dd><select name="securehost"></select>&nbsp;&nbsp;<@form.port name="secureport" disabled=!permissions.webSettingsHttpPortAllowed readonly=!permissions.webSettingsHttpPortAllowed><@i18n.message key="WebConfiguration.label.httpsPort" /> &nbsp;</@></dd>
+                <#else>
+                    <dt hidden class="checkbox"><@form.checkbox name="bindsecure"><@i18n.message key="WebConfiguration.label.https" /></@></dt>
+                    <dd hidden><select name="securehost"></select>&nbsp;&nbsp;<@form.port name="secureport" disabled=!permissions.webSettingsHttpPortAllowed readonly=!permissions.webSettingsHttpPortAllowed><@i18n.message key="WebConfiguration.label.httpsPort" /> &nbsp;</@></dd>
+                </#if>
             </dl>
         </fieldset>
 

@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updateDescriptor baseUrl="">
-  <entry targetMediaFileId="25" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2024.4.0.517.exe" newVersion="2024.4.0.517" newMediaFileId="25" fileSize="199636992" md5Sum="85addd4d19c54e5df74d762b47198781" sha256Sum="e74fe5efb73ba932e5c2b4e63f54030da942954877d761ede4bf7a05bc595f64" bundledJre="windows-x86-17.0.8.1.tar.gz" archive="false" singleBundle="false">
+  <entry targetMediaFileId="25" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2025.1.0.523.exe" newVersion="2025.1.0.523" newMediaFileId="25" fileSize="199930368" md5Sum="ce82201434a86041b550c21e8ea2a250" sha256Sum="52d4a324201c71fdb76a461a2949ac2263becd3d8be4faed831334ca31283704" bundledJre="windows-x86-17.0.8.1.tar.gz" archive="false" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="3890" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-win-2024.4.0.517.zip" newVersion="2024.4.0.517" newMediaFileId="3890" fileSize="153279685" md5Sum="0b9e7885432698ea32fa0a639c736389" sha256Sum="42a8737764034efa3f26bc790faf0c9c6fd414492251612a2e9e99a4b04dbc04" bundledJre="" archive="true" singleBundle="false">
+  <entry targetMediaFileId="3890" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-win-2025.1.0.523.zip" newVersion="2025.1.0.523" newMediaFileId="3890" fileSize="153572789" md5Sum="6e790061c7bd948627974fd977e3f07c" sha256Sum="718d24839a128554d31638dbefb7d12b86ecb759ac7df2504261edfd0aae652a" bundledJre="" archive="true" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="811" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-x64-2024.4.0.517.exe" newVersion="2024.4.0.517" newMediaFileId="811" fileSize="199318528" md5Sum="69b2266311eb0cd84f2c445526239998" sha256Sum="584b65eb1f37d5c383503a36a237ed7fc40d99b1e0e7fb4d5013b45178a91665" bundledJre="windows-amd64-17.0.8.1.tar.gz" archive="false" singleBundle="false">
+  <entry targetMediaFileId="811" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-x64-2025.1.0.523.exe" newVersion="2025.1.0.523" newMediaFileId="811" fileSize="199611392" md5Sum="44680f6f6a414a389df2543d7c1dfb90" sha256Sum="869ae2e1b7713511e41da6a29cace0161ad4908037ae7107712386c78cf2c47e" bundledJre="windows-amd64-17.0.8.1.tar.gz" archive="false" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="3892" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-win-x64-2024.4.0.517.zip" newVersion="2024.4.0.517" newMediaFileId="3892" fileSize="153371179" md5Sum="3e0dd5306a320af1dfbaf9fe36def354" sha256Sum="0e0fc86c6ddf2fde33bb5ea5265ef3475fd0987a97bd9b5eb25785ee9b7f8778" bundledJre="" archive="true" singleBundle="false">
+  <entry targetMediaFileId="3892" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-win-x64-2025.1.0.523.zip" newVersion="2025.1.0.523" newMediaFileId="3892" fileSize="153664280" md5Sum="be47625456cd4bc14055ed3e5d1a86b8" sha256Sum="09f955794525634838cf82382e847d7afd7dba3ba2d0ec31dae2b808c6f658f7" bundledJre="" archive="true" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="813" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2024.4.0.517.dmg" newVersion="2024.4.0.517" newMediaFileId="813" fileSize="208003207" md5Sum="deb523975971dada7d130e33347664dc" sha256Sum="3c9474fad78fe7199989a5f24164f24f75e8da209adb11152f2b78b5f59b11ea" bundledJre="macos-universal-17.0.8.1.tar.gz" archive="false" singleBundle="false">
+  <entry targetMediaFileId="813" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2025.1.0.523.dmg" newVersion="2025.1.0.523" newMediaFileId="813" fileSize="208298119" md5Sum="a3573be50b60534f1709319558178672" sha256Sum="2f66e50f27834d615e4d865fdbfb43c67ca7692fb1507d734c20f011e66548f6" bundledJre="macos-universal-17.0.8.1.tar.gz" archive="false" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="3894" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-mac-2024.4.0.517.tgz" newVersion="2024.4.0.517" newMediaFileId="3894" fileSize="152588469" md5Sum="c46140ce59789f9e27f27582dca1145d" sha256Sum="91fb7c5db9afb40002c08569f9a799e5bda0d458ab9ea8ca032983260309855b" bundledJre="" archive="true" singleBundle="false">
+  <entry targetMediaFileId="3894" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-mac-2025.1.0.523.tgz" newVersion="2025.1.0.523" newMediaFileId="3894" fileSize="152878892" md5Sum="c99da34f5d5ba776289543d11fe08c50" sha256Sum="64db6db7a115733623f8af82e99b8e2f8dd5c9169a2f9e6277f4983f577e47fc" bundledJre="" archive="true" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="260" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2024.4.0.517.sh" newVersion="2024.4.0.517" newMediaFileId="260" fileSize="153373461" md5Sum="6cbf5ccc84747bd1cd3a351212dc947f" sha256Sum="39588d4697b51c79e05d9a58ba13834b19ffa3488e78b37907754b3019fffa4e" bundledJre="" archive="false" singleBundle="false">
+  <entry targetMediaFileId="260" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2025.1.0.523.sh" newVersion="2025.1.0.523" newMediaFileId="260" fileSize="153666573" md5Sum="6eb174c4e36dd7e3e7099d6f82a085cb" sha256Sum="ddc64207606cfb8ece2357014d44acb76ae537ba1274519944ae4b11c31850b9" bundledJre="" archive="false" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="261" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-unix-2024.4.0.517.tar.gz" newVersion="2024.4.0.517" newMediaFileId="261" fileSize="152587451" md5Sum="7380278d1d5b1ef76d0d01dc0f5a83c8" sha256Sum="b7bc8b98daeeb7e2b0bec8469e9a011bfdb9bcad4bc1ec21b43f1dcd214be74b" bundledJre="" archive="true" singleBundle="false">
+  <entry targetMediaFileId="261" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-unix-2025.1.0.523.tar.gz" newVersion="2025.1.0.523" newMediaFileId="261" fileSize="152877326" md5Sum="8c533ec10832a6e0d46a48c4d2ffaeb7" sha256Sum="65adf017b0880294703131553dc7d441a59ed87b23abbb03322247b04a2972f5" bundledJre="" archive="true" singleBundle="false">
     <comment language="en" />
   </entry>
-  <entry targetMediaFileId="262" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2024.4.0.517.rpm" newVersion="2024.4.0.517" newMediaFileId="262" fileSize="152566561" md5Sum="39df06aca66314d44eada10e42a3ae9f" sha256Sum="499397fd94282c04471ca4e22bce6cc1ec46139aa8cec57fa9989238fc5f7f93" bundledJre="" archive="true" singleBundle="false">
+  <entry targetMediaFileId="262" updatableVersionMin="" updatableVersionMax="" fileName="mft-server-agent-install-2025.1.0.523.rpm" newVersion="2025.1.0.523" newMediaFileId="262" fileSize="152861875" md5Sum="b8269986873c0b0ef7d6d67fce81109b" sha256Sum="b50ab1413b6b2256b32ba429c311d4d28fdab1283a56a5d97edf15e0b05a70a9" bundledJre="" archive="true" singleBundle="false">
     <comment language="en" />
   </entry>
 </updateDescriptor>
