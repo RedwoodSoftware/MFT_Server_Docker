@@ -9,9 +9,23 @@ Find a working directory on your server where you'd like to configure the next i
 
 **/home/user/mft/**
 
-1. Create the **docker-compose.yaml** file in the working directory by copy and pasting the example below for reference
-2. Create a **.env** file for the two secret values, JSCAPE_ADMIN_PASSWORD & JDBC_PASSWORD. An example is outlined below. This file **MUST BE PLACED ALONGSIDE THE COMPOSE FILE**. If you plan to manage this via source, ensure you are ommitting these secrets via .gitignore for security purposes.
-3. Run the command below to startup the resources and deploy MFT Server
+1. Copy down the **docker-compose.yaml** file in your working directory using the following command (or copy from the repository above):
+
+    ` wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2024.4.0.517/docker-compose.yaml `
+
+2. Copy down a .env file template to start with using the following command (or copy from the repository above):
+
+    ` wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2024.4.0.517/.env.example `
+ 
+3. Ensure that your **license.lic** file is in the working directory as well so that you have 3 files present:
+
+        /home/user/mft/
+            ├── .env
+            ├── docker-compose.yaml
+            └── license.lic
+
+
+4. Run the command below to startup the resources and deploy MFT Server
 
     ` docker compose up -d `
 
@@ -35,7 +49,6 @@ The `run.sh` script is the entry point for the Docker container. It performs the
 - Adds a default administrator if not present.
 - Configures command-line tools and the Management UI.
 - Generates a server key if not present.
-- Adds a domain for the MFT Server if not present.
 - Starts the main server process.
 
 ## Example Docker Compose File
@@ -62,8 +75,6 @@ services:
             SERVER_MEMORY: "4"
             # Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane if properly maintained via docker volumes.
             PREV_VERSION: ""
-            # Name of the JSCAPE MFT Server domain to create upon instantiation of the environment. This will NOT overwrite any settings if already present.
-            JSCAPE_ENV_NAME: ""
         # Please note that not all ports are needed and if you do not plan on using them, feel free to omit from your compose file.
         ports:
             # Port mapping for admin HTTP interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTP_PORT environment variable
