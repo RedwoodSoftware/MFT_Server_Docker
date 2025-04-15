@@ -1,8 +1,0 @@
-<fieldset class="large">
-    <legend><@i18n.message key="TradingPartners.legend.connection" /></legend>
-    <div><@form.host name="host" required=true description=i18n.text("TradingPartners.CyberArk.label.host.description") example=i18n.text("TradingPartners.CyberArk.label.host.example")><@i18n.message key="TradingPartners.CyberArk.label.host" /></@></div>
-    <div><@form.port name="port" description=i18n.text("TradingPartners.CyberArk.label.port.description") example=i18n.text("TradingPartners.CyberArk.label.port.example")><@i18n.message key="TradingPartners.CyberArk.label.port" /></@></div>
-    <div><@form.number name="timeout" maxlength=2 description=i18n.text("TradingPartners.label.timeout.description") example=i18n.text("TradingPartners.label.timeout.example")><@i18n.message key="TradingPartners.label.timeout" /></@>&nbsp;<@i18n.message key="TradingPartners.label.timeout.unit" /></div>
-    <div><@form.username name="username" required=true description=i18n.text("TradingPartners.CyberArk.label.username.description") example=i18n.text("TradingPartners.CyberArk.label.username.example")><@i18n.message key="TradingPartners.CyberArk.label.username" /></@></div>
-    <div><@form.password name="password" required=false description=i18n.text("TradingPartners.CyberArk.label.password.description") example=i18n.text("TradingPartners.CyberArk.label.password.example")><@i18n.message key="TradingPartners.CyberArk.label.password" /></@></div>
-</fieldset>

@@ -1,1 +1,0 @@
-ALTER TABLE domain_directory_monitor_event ADD tradingPartner VARCHAR(255) DEFAULT NULL;

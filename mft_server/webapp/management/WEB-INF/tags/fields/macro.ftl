@@ -1,1 +1,0 @@
-<#macro field_help id title description="" example=""><span id="${id?html}" role="tooltip" class="info"><b>${title}</b><#if description?has_content><div>${description}</div></#if><#if example?has_content><div><b>Example:</b> ${example}</div></#if></span></#macro>

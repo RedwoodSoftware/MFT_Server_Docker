@@ -1,2 +1,0 @@
-./server stop
-./server start

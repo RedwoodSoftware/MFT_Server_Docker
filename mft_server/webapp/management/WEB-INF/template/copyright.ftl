@@ -1,1 +1,0 @@
-<div class="copyright"><@i18n.message key="Copyright.text" args=.now?string('yyyy')/></div>

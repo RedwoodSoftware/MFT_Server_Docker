@@ -1,1 +1,0 @@
-ALTER TABLE domain_trading_partner ADD server VARCHAR(255) DEFAULT NULL;
