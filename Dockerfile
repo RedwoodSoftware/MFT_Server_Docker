@@ -14,10 +14,12 @@ ENV JSCAPE_MANAGEMENT_HTTPS_PORT="11443"
 ENV LIBREOFFICE_INSTALL="N"
 ENV MAX_ATTEMPTS_STARTUP="3"
 ENV DB_SYNC_PERIOD="30"
+ENV ENABLE_FIPS_LIBRARIES="N"
 
-# Install a JRE. This step can be skipped if a JRE is already present in the base image.
+# Install a JRE and upgrade the base image packages
 RUN apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless curl unzip cron net-tools nano locales && apt-get clean \
+	DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
+	DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless curl unzip cron net-tools nano locales haveged && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -26,6 +28,9 @@ RUN update-locale LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
+
+RUN systemctl enable haveged
+RUN systemctl start haveged
 
 COPY mft_server /opt/mft_server
 COPY --chmod=755 ./run.sh /opt/mft_server/run.sh

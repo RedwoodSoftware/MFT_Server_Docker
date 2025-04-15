@@ -41,6 +41,26 @@ tail_server_log() {
     tail -f /opt/mft_server/var/log/server0.log
 }
 
+toggle_fips() {
+    if [[ "$ENABLE_FIPS_LIBRARIES" == "Y" ]]; then
+        echo "Enabling FIPS libraries..."
+        echo "Creating backups of existing Bouncy Castle libraries..."
+        mkdir -p /opt/mft_server/libs/backup
+        mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
+        echo "Replacing Bouncy Castle libraries with FIPS-compliant versions..."
+        cp /opt/mft_server/libs/fips/bc* /opt/mft_server/libs/
+    else
+        echo "Disabling FIPS libraries..."
+        if [[ -d /opt/mft_server/libs/backup ]]; then
+            echo "Restoring original Bouncy Castle libraries from backup..."
+            mv /opt/mft_server/libs/backup/bc* /opt/mft_server/libs/
+            echo "FIPS libraries have been disabled. Restarting MFT Server is required for changes to take effect."
+        else
+            echo "No backup of original libraries found. Unable to disable FIPS libraries."
+        fi
+    fi
+}
+
 #######################################################
 ###################  END FUNCTIONS  ###################
 #######################################################
@@ -75,6 +95,24 @@ if [[ "$LIBREOFFICE_INSTALL" == "Y" ]]; then
     echo "LIBREOFFICE_INSTALL is set to Y, installing LibreOffice..."
     apt-get update && apt-get install -y libreoffice
     echo "LibreOffice installed successfully"
+fi
+
+if [[ "$ENABLE_FIPS_LIBRARIES" == "Y" ]]; then
+    echo "Enabling FIPS libraries..."
+    echo "Creating backups of existing Bouncy Castle libraries..."
+    mkdir -p /opt/mft_server/libs/backup
+    mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
+    echo "Replacing Bouncy Castle libraries with FIPS-compliant versions..."
+    cp /opt/mft_server/libs/fips/bc* /opt/mft_server/libs/
+else
+    echo "Disabling FIPS libraries..."
+    if [[ -d /opt/mft_server/libs/backup ]]; then
+        echo "Restoring original Bouncy Castle libraries from backup..."
+        mv /opt/mft_server/libs/backup/bc* /opt/mft_server/libs/
+        echo "FIPS libraries have been disabled. Restarting MFT Server is required for changes to take effect."
+    else
+        echo "No backup of original libraries found. FIPS was either never enabled or the backup cannot be found."
+    fi
 fi
 
 echo "Setting Server Memory..."

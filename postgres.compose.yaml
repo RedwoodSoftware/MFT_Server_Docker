@@ -44,6 +44,7 @@ services:
             - mft_server_data:/opt/mft_server/data
             - mft_server_data:/opt/mft_server/users
             - mft_server_data:/opt/mft_server/logs
+        # The below ensures that the postgres container has started prior to starting the MFT Server
         depends_on:
             - postgres
         networks:
@@ -52,12 +53,18 @@ services:
 
     postgres:
         image: postgres:17
+        # This container name is important as it links the postgres container to the JDBC_CONNECTION_STRING in the mft_server container
         container_name: postgres
         environment:
+            # This user is what is then leveraged above in the JDBC_USER. It will create this user upon first startup in the database
             POSTGRES_USER: "jscape"
+            # This password is what is then leveraged above in the JDBC_PASSWORD. It will create this password upon first startup in the database
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            # This is the name of the database that will be created upon first startup. It is referenced in the JDBC_CONNECTION_STRING above.
             POSTGRES_DB: mft_server
         volumes:
+            # Persistent volume storage for the PostgreSQL database
+            # This is where the database will be stored and is important to maintain for future upgrades
             - postgres_data:/var/lib/postgresql/data
         networks:
             - jscape_network
