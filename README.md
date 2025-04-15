@@ -2,6 +2,8 @@
 
 This repository contains the necessary files to deploy an MFT (Managed File Transfer) Server using Docker. Below is an explanation of the different components involved and how to structure an example Docker Compose file for deployment.
 
+_Please review the license terms prior to deployment_
+
 ## How to Deploy
 
 **Run the Docker Compose**:
