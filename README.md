@@ -13,11 +13,11 @@ Find a working directory on your server where you'd like to configure the next i
 
 1. Copy down the **docker-compose.yaml** file in your working directory using the following command (or copy from the repository above):
 
-    ` wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2024.4.0.517/docker-compose.yaml `
+    ` wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/docker-compose.yaml `
 
 2. Copy down a .env file template to start with using the following command (or copy from the repository above):
 
-    ` wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2024.4.0.517/.env.example `
+    ` wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/.env.example `
  
 3. Ensure that your **license.lic** file is in the working directory as well so that you have 3 files present:
 
