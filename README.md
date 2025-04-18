@@ -61,7 +61,7 @@ Below is an example `docker-compose.yaml` file for deploying the MFT Server:
 services:
     mft_server:
         # Update to reflect the desired version if not the latest release
-        image: "public.ecr.aws/s9n3l9g8/redwood/mft_server:latest"
+        image: "public.ecr.aws/redwood-software/redwood/mft_server:latest"
         environment:
             # Username to be created for intial JSCAPE MFT Server administrator access
             JSCAPE_ADMIN_USER: ""
