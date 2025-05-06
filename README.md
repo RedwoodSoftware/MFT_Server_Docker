@@ -4,6 +4,25 @@ This repository contains the necessary files to deploy an MFT (Managed File Tran
 
 _Please review the license terms prior to deployment_
 
+## JSCAPE Docker Support Policy
+
+JSCAPE provides limited support for its products running in Docker containers.
+
+### What We Support
+- Functional issues within the JSCAPE container itself
+
+### What We Don't Support
+- Issues related to the container orchestration environment (e.g., Kubernetes, Docker Swarm), including:
+    - Orchestration platform configuration and management
+    - Container scheduling and networking
+
+### Customer Responsibilities
+- You are responsible for configuring and maintaining the container orchestration environment
+- Sample configurations are provided as a starting point, but they are not part of the core JSCAPE product
+
+### Getting Support
+For support with JSCAPE-specific issues within a container, contact our support team with details of the problem and the Docker image used.
+
 ## How to Deploy
 
 **Run the Docker Compose**:
