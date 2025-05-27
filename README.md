@@ -4,6 +4,9 @@ This repository contains the necessary files to deploy an MFT (Managed File Tran
 
 _Please review the license terms prior to deployment_
 
+## Image Repository:
+[https://gallery.ecr.aws/redwood-software/redwood/mft_server](https://gallery.ecr.aws/redwood-software/redwood/mft_server)
+
 ## JSCAPE Docker Support Policy
 
 JSCAPE provides limited support for its products running in Docker containers.

@@ -70,15 +70,6 @@ trap 'echo "Script terminated"; exit' INT TERM
 echo "Establishing Database Connection..."
 ./js-database-configuration -configure -url "${JDBC_CONNECTION_STRING}" -user "${JDBC_USER}" -password "${JDBC_PASSWORD}" -sync-period "${DB_SYNC_PERIOD}" > /dev/null 2>&1
 
-# Initialize the database tables
-if ./js-database-configuration -test > /dev/null; then
-    echo "Database already initialized"
-    DB_INITIALIZED=true
-else
-    ./js-database-configuration -init
-    DB_INITIALIZED=false
-fi
-
 if [[ -z "$PREV_VERSION" ]]; then
     echo "Previous version environment variable is missing or empty, skipping upgrade process"
 else
@@ -89,6 +80,15 @@ else
     echo "Updating data protection..."
     ./js-database-configuration -update-data-protection
     echo "Data protection updated successfully"
+fi
+
+# Initialize the database tables
+if ./js-database-configuration -test > /dev/null; then
+    echo "Database already initialized"
+    DB_INITIALIZED=true
+else
+    ./js-database-configuration -init
+    DB_INITIALIZED=false
 fi
 
 if [[ "$LIBREOFFICE_INSTALL" == "Y" ]]; then
