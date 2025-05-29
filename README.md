@@ -33,14 +33,30 @@ Find a working directory on your server where you'd like to configure the next i
 
 **/home/user/mft/**
 
-1. Copy down the **docker-compose.yaml** file in your working directory using the following command (or copy from the repository above):
+1. Download the **docker-compose.yaml** (for Standalone) or **postgres.compose.yaml** (for JSCAPE with Postgres) file into your working directory using one of the following commands, or copy from the repository above:
 
-    ` wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/docker-compose.yaml `
+    **Standalone:**
+    ```sh
+    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/docker-compose.yaml
+    ```
 
-2. Copy down a .env file template to start with using the following command (or copy from the repository above):
+    **JSCAPE with Postgres:**
+    ```sh
+    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/postgres.compose.yaml
+    ```
 
-    ` wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/.env.example `
- 
+2. Download a `.env` file template to start with using one of the following commands, or copy from the repository above:
+
+    **Standalone:**
+    ```sh
+    wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/.env.example
+    ```
+
+    **JSCAPE with Postgres:**
+    ```sh
+    wget -O .env https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/.env.postgres.example
+    ```
+
 3. Ensure that your **license.lic** file is in the working directory as well so that you have 3 files present:
 
         /home/user/mft/
@@ -49,7 +65,9 @@ Find a working directory on your server where you'd like to configure the next i
             └── license.lic
 
 
-4. Run the command below to startup the resources and deploy MFT Server
+4. Adjust .env values as needed. This generally includes passwords for your connections for example and should be updated with secure values.
+
+5. Run the command below to startup the resources and deploy MFT Server
 
     ` docker compose up -d `
 
@@ -74,69 +92,3 @@ The `run.sh` script is the entry point for the Docker container. It performs the
 - Configures command-line tools and the Management UI.
 - Generates a server key if not present.
 - Starts the main server process.
-
-## Example Docker Compose File
-
-Below is an example `docker-compose.yaml` file for deploying the MFT Server:
-
-```yaml
-services:
-    mft_server:
-        # Update to reflect the desired version if not the latest release
-        image: "public.ecr.aws/redwood-software/redwood/mft_server:latest"
-        environment:
-            # Username to be created for intial JSCAPE MFT Server administrator access
-            JSCAPE_ADMIN_USER: ""
-            # Password to be assigned to that initial JSCAPE MFT Server administrator
-            JSCAPE_ADMIN_PASSWORD: ${JSCAPE_ADMIN_PASSWORD}
-            # JDBC connection string used for targeting the JSCAPE backend database. NOTE: This database must exist prior deploying, this process will populate the JSCAPE MFT Server schema into this empty database
-            JDBC_CONNECTION_STRING: ""
-            # Username for accessing the database referenced in JDBC_CONNECTION_STRING
-            JDBC_USER: ""
-            # Password for accessing the database referenced in JDBC_CONNECTION_STRING
-            JDBC_PASSWORD: ${JDBC_PASSWORD}
-            # Memory to assign to the JVM for MFT Server to be able to leverage. This is simply a number representing GB.
-            SERVER_MEMORY: "4"
-            # Previous JSCAPE version including minor release numbering (ex. 2024.3.1.512). This should be set if looking to upgrade the deployment to a newer release. The update can also be done via the UI in the Global Settings pane if properly maintained via docker volumes.
-            PREV_VERSION: ""
-        # Please note that not all ports are needed and if you do not plan on using them, feel free to omit from your compose file.
-        ports:
-            # Port mapping for admin HTTP interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTP_PORT environment variable
-            - "11880:11880"
-            # Port mapping for admin HTTPS interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTPS_PORT environment variable
-            - "11443:11443"
-            # Port mapping for SFTP connections
-            - "22:22"
-            # Port mapping for HTTPS Web Client interface (only one of the two is required but both can be used between 80 and 443)
-            - "443:443"
-            # Port mapping for HTTP Web Client interface (only one of the two is required but both can be used between 80 and 443)
-            - "80:80"
-            # Port mapping for AFTP connections
-            - "3305:3305/udp"
-            # Port mapping for JSCAPE Agent connections
-            - "40025:40025"
-        volumes:
-            # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
-            - ./license.lic:/opt/mft_server/etc/license.lic
-            # Persistent volume storage for configurations, custom libraries, users, data, and domain logs.
-            - mft_server_data:/opt/mft_server/etc
-            - mft_server_data:/opt/mft_server/libs/jdbc
-            - mft_server_data:/opt/mft_server/libs/actions
-            - mft_server_data:/opt/mft_server/libs/ext
-            - mft_server_data:/opt/mft_server/data
-            - mft_server_data:/opt/mft_server/users
-            - mft_server_data:/opt/mft_server/logs
-
-volumes:
-    mft_server_data:
-```
-
-## Example .env File
-
-Below is an example `.env` file for deploying the MFT Server:
-
-```.env
-# .env file
-JSCAPE_ADMIN_PASSWORD=your_admin_password
-JDBC_PASSWORD=your_jdbc_password
-```

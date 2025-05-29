@@ -29,9 +29,6 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-RUN systemctl enable haveged
-RUN systemctl start haveged
-
 COPY mft_server /opt/mft_server
 COPY --chmod=755 ./run.sh /opt/mft_server/run.sh
 
@@ -53,6 +50,9 @@ EXPOSE 3305/tcp
 EXPOSE 80/tcp
 # Agent
 EXPOSE 40025/tcp
+# AFTP
+EXPOSE 3000/tcp
+EXPOSE 3000/udp
 
 # Define volumes
 VOLUME /opt/mft_server/etc/license.lic

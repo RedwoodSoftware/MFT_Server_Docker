@@ -29,10 +29,13 @@ services:
             - 443:443
             # Port mapping for HTTP Web Client interface (only one of the two is required but both can be used between 80 and 443)
             - 80:80
-            # Port mapping for AFTP connections
-            - 3305:3305/udp
+            # Port mapping for OFTP2 connections
+            - 3305:3305
             # Port mapping for JSCAPE Agent connections
             - 40025:40025
+            # Port mapping for AFTP connections
+            - 3000:3000/tcp
+            - 3000:3000/udp
         volumes:
             # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
             - ./license.lic:/opt/mft_server/etc/license.lic

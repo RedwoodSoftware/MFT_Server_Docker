@@ -104,7 +104,7 @@ if [[ "$ENABLE_FIPS_LIBRARIES" == "Y" ]]; then
     mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
     echo "Replacing Bouncy Castle libraries with FIPS-compliant versions..."
     cp /opt/mft_server/libs/fips/bc* /opt/mft_server/libs/
-else
+elif [[ "$ENABLE_FIPS_LIBRARIES" == "N" ]]; then
     echo "Disabling FIPS libraries..."
     if [[ -d /opt/mft_server/libs/backup ]]; then
         echo "Restoring original Bouncy Castle libraries from backup..."
