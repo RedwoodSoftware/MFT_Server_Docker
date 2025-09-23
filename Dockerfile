@@ -16,18 +16,19 @@ ENV MAX_ATTEMPTS_STARTUP="3"
 ENV DB_SYNC_PERIOD="30"
 ENV ENABLE_FIPS_LIBRARIES="N"
 
-# Install a JRE and upgrade the base image packages
-RUN apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
-	DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless curl unzip cron net-tools nano locales haveged && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+      openjdk17-jdk \
+      bash \
+      net-tools \
+      curl \
+      unzip \
+      tzdata \
+      ca-certificates \
+      libcap
 
-RUN locale-gen en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 COPY mft_server /opt/mft_server
 COPY --chmod=755 ./run.sh /opt/mft_server/run.sh
