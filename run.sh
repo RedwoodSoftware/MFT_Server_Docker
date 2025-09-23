@@ -11,21 +11,21 @@ check_startup() {
     local attempt=0
 
     while [[ $attempt -lt ${MAX_ATTEMPTS_STARTUP} ]]; do
-        if netstat -tulnp | grep -q ":${JSCAPE_MANAGEMENT_HTTPS_PORT}\|:${JSCAPE_MANAGEMENT_HTTP_PORT}"; then
+        if netstat -tuln | grep -q ":${JSCAPE_MANAGEMENT_HTTPS_PORT}\|:${JSCAPE_MANAGEMENT_HTTP_PORT}"; then
             echo "Listener on port ${JSCAPE_MANAGEMENT_HTTPS_PORT} or ${JSCAPE_MANAGEMENT_HTTP_PORT} is enabled and running"
             echo "MFT Server Started"
             break
         else
             echo "Listener on port ${JSCAPE_MANAGEMENT_HTTPS_PORT} or ${JSCAPE_MANAGEMENT_HTTP_PORT} is not running, attempt $((attempt+1)) of ${MAX_ATTEMPTS_STARTUP}"
             echo "Netstat output for debugging:"
-            netstat -tulnp
+            netstat -tuln
             attempt=$((attempt+1))
             if [[ $attempt -lt ${MAX_ATTEMPTS_STARTUP} ]]; then
                 sleep 10
             fi
         fi
     done
-    
+
     if [[ $attempt -eq ${MAX_ATTEMPTS_STARTUP} ]]; then
         echo "Listener on port ${JSCAPE_MANAGEMENT_HTTP_PORT} failed to start after ${MAX_ATTEMPTS_STARTUP} attempts"
         echo "MFT Server Failed to Start ---------------"
@@ -68,7 +68,7 @@ toggle_fips() {
 trap 'echo "Script terminated"; exit' INT TERM
 
 echo "Establishing Database Connection..."
-./js-database-configuration -configure -url "${JDBC_CONNECTION_STRING}" -user "${JDBC_USER}" -password "${JDBC_PASSWORD}" -sync-period "${DB_SYNC_PERIOD}" > /dev/null 2>&1
+./js-database-configuration -configure -url "${JDBC_CONNECTION_STRING}" -user "${JDBC_USER}" -password "${JDBC_PASSWORD}" -sync-period "${DB_SYNC_PERIOD}"
 
 if [[ -z "$PREV_VERSION" ]]; then
     echo "Previous version environment variable is missing or empty, skipping upgrade process"

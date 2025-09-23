@@ -29,7 +29,7 @@ For support with JSCAPE-specific issues within a container, contact our support 
 ## How to Deploy
 
 **Run the Docker Compose**:
-Find a working directory on your server where you'd like to configure the next items out of. For our purposes here I'll use a working directory called:
+Find a working directory on your server where you'd like to configure the next items. For our purposes here I'll use a working directory called:
 
 **/home/user/mft/**
 
@@ -37,12 +37,12 @@ Find a working directory on your server where you'd like to configure the next i
 
     **Standalone:**
     ```sh
-    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/docker-compose.yaml
+    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/main/docker-compose.yaml
     ```
 
     **JSCAPE with Postgres:**
     ```sh
-    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/2025.1.0.523/postgres.compose.yaml
+    wget -O docker-compose.yaml https://raw.githubusercontent.com/RedwoodSoftware/MFT_Server_Docker/refs/heads/main/postgres.compose.yaml
     ```
 
 2. Download a `.env` file template to start with using one of the following commands, or copy from the repository above:
@@ -77,7 +77,7 @@ This will start the MFT Server with the specified configuration and make it acce
 
 ### Image Details
 The MFT Server image defines the environment baseline configuration
-- Base image is `ubuntu:22.04`.
+- Base image is `alpine:22.04`.
 - Defining environment variables for configuration.
 - Installing necessary packages such as JRE, curl, unzip, and others.
 - Defining volumes for persistent storage.

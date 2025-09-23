@@ -1,3 +1,6 @@
+# Alpine dev
+*.alpine*
+
 # Environment variables
 .env
 .env.*
