@@ -6,6 +6,42 @@ set -e
 ###################  FUNCTIONS  #######################
 #######################################################
 
+# Function to execute scripts in a directory
+execute_scripts_in_directory() {
+    local script_dir="$1"
+    local stage="$2"
+    
+    if [[ ! -d "$script_dir" ]]; then
+        echo "Directory $script_dir does not exist, skipping $stage scripts"
+        return 0
+    fi
+    
+    # Check if directory has executable scripts
+    local script_count=$(find "$script_dir" -maxdepth 1 -type f -executable | wc -l)
+    
+    if [[ $script_count -eq 0 ]]; then
+        echo "No executable scripts found in $script_dir, skipping $stage scripts"
+        return 0
+    fi
+    
+    echo "Executing $stage scripts from $script_dir..."
+    
+    # Execute all executable files in the directory in alphabetical order
+    for script in "$script_dir"/*; do
+        if [[ -f "$script" && -x "$script" ]]; then
+            echo "Running $stage script: $(basename "$script")"
+            if "$script"; then
+                echo "Successfully executed: $(basename "$script")"
+            else
+                echo "WARNING: Script $(basename "$script") failed with exit code $?"
+                # You can change this to 'exit 1' if you want to fail on any script failure
+            fi
+        fi
+    done
+    
+    echo "Completed $stage scripts execution"
+}
+
 # Function to check startup attempts and handle failure
 check_startup() {
     local attempt=0
@@ -41,25 +77,81 @@ tail_server_log() {
     tail -f /opt/mft_server/var/log/server0.log
 }
 
+# Function to enable or disable FIPS libraries based on FIPS_VERSION environment variable
 toggle_fips() {
-    if [[ "$ENABLE_FIPS_LIBRARIES" == "Y" ]]; then
-        echo "Enabling FIPS libraries..."
-        echo "Creating backups of existing Bouncy Castle libraries..."
-        mkdir -p /opt/mft_server/libs/backup
-        mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
-        echo "Replacing Bouncy Castle libraries with FIPS-compliant versions..."
-        cp /opt/mft_server/libs/fips/bc* /opt/mft_server/libs/
+    local fips_version="${FIPS_VERSION:-}"
+    
+    if [[ -n "$fips_version" ]]; then
+        case "$fips_version" in
+            "FIPS-140-2")
+                echo "Enabling FIPS 140-2 libraries..."
+                echo "Creating backups of existing Bouncy Castle libraries..."
+                mkdir -p /opt/mft_server/libs/backup
+                
+                # Backup existing BC libraries if they exist
+                if ls /opt/mft_server/libs/bc* 1> /dev/null 2>&1; then
+                    mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
+                fi
+                
+                echo "Replacing Bouncy Castle libraries with FIPS 140-2 compliant versions..."
+                if [[ -d /opt/mft_server/fips ]]; then
+                    cp /opt/mft_server/fips/bc* /opt/mft_server/libs/
+                else
+                    echo "ERROR: FIPS 140-2 directory not found at /opt/mft_server/libs/fips/"
+                    return 1
+                fi
+                ;;
+                
+            "FIPS-140-3")
+                echo "Enabling FIPS 140-3 libraries..."
+                echo "Creating backups of existing Bouncy Castle libraries..."
+                mkdir -p /opt/mft_server/libs/backup
+                
+                # Backup existing BC libraries if they exist
+                if ls /opt/mft_server/libs/bc* 1> /dev/null 2>&1; then
+                    mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
+                fi
+                
+                echo "Replacing Bouncy Castle libraries with FIPS 140-3 compliant versions..."
+                if [[ -d /opt/mft_server/fips/2.0 ]]; then
+                    cp /opt/mft_server/fips/2.0/*.jar /opt/mft_server/libs/
+                else
+                    echo "ERROR: FIPS 140-3 directory not found at /opt/mft_server/fips/2.0/"
+                    return 1
+                fi
+                ;;
+                
+            *)
+                echo "ERROR: Invalid FIPS_VERSION specified: '$fips_version'"
+                echo "Valid values are: 'FIPS-140-2' or 'FIPS-140-3'"
+                return 1
+                ;;
+        esac
+        
+        echo "FIPS libraries enabled successfully."
+        
     else
-        echo "Disabling FIPS libraries..."
+        echo "Disabling FIPS libraries (FIPS_VERSION not set)..."
         if [[ -d /opt/mft_server/libs/backup ]]; then
             echo "Restoring original Bouncy Castle libraries from backup..."
+            
+            # Remove current FIPS libraries
+            if ls /opt/mft_server/libs/bc* 1> /dev/null 2>&1; then
+                rm -f /opt/mft_server/libs/bc*
+            fi
+            
+            # Restore from backup
             mv /opt/mft_server/libs/backup/bc* /opt/mft_server/libs/
-            echo "FIPS libraries have been disabled. Restarting MFT Server is required for changes to take effect."
+            rmdir /opt/mft_server/libs/backup 2>/dev/null || true
+            
+            echo "FIPS libraries have been disabled."
         else
             echo "No backup of original libraries found. Unable to disable FIPS libraries."
+            return 1
         fi
     fi
 }
+
 
 #######################################################
 ###################  END FUNCTIONS  ###################
@@ -97,23 +189,7 @@ if [[ "$LIBREOFFICE_INSTALL" == "Y" ]]; then
     echo "LibreOffice installed successfully"
 fi
 
-if [[ "$ENABLE_FIPS_LIBRARIES" == "Y" ]]; then
-    echo "Enabling FIPS libraries..."
-    echo "Creating backups of existing Bouncy Castle libraries..."
-    mkdir -p /opt/mft_server/libs/backup
-    mv /opt/mft_server/libs/bc* /opt/mft_server/libs/backup/
-    echo "Replacing Bouncy Castle libraries with FIPS-compliant versions..."
-    cp /opt/mft_server/libs/fips/bc* /opt/mft_server/libs/
-elif [[ "$ENABLE_FIPS_LIBRARIES" == "N" ]]; then
-    echo "Disabling FIPS libraries..."
-    if [[ -d /opt/mft_server/libs/backup ]]; then
-        echo "Restoring original Bouncy Castle libraries from backup..."
-        mv /opt/mft_server/libs/backup/bc* /opt/mft_server/libs/
-        echo "FIPS libraries have been disabled. Restarting MFT Server is required for changes to take effect."
-    else
-        echo "No backup of original libraries found. FIPS was either never enabled or the backup cannot be found."
-    fi
-fi
+toggle_fips
 
 echo "Setting Server Memory..."
 sed -i "s/-Xmx1024m/-Xmx${SERVER_MEMORY}g/g" /opt/mft_server/server.vmoptions
@@ -130,11 +206,17 @@ if [[ -z "$PREV_VERSION" && "$DB_INITIALIZED" == false ]]; then
     ./js-add-server-key -alias example_rsa -rsa -size 2048
 fi
 
+# Execute pre-service start scripts
+execute_scripts_in_directory "./startup_scripts/pre_service_start" "pre-service"
+
 # Start main process
 ./start_service.sh
 
 sleep 30
 
 check_startup
+
+# Execute post-service start scripts
+execute_scripts_in_directory "./startup_scripts/post_service_start" "post-service"
 
 tail_server_log

@@ -1,6 +1,10 @@
 # Alpine dev
 *.alpine*
 
+*test.sh
+
+build.sh
+
 # Environment variables
 .env
 .env.*

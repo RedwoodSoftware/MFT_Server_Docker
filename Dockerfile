@@ -14,7 +14,7 @@ ENV JSCAPE_MANAGEMENT_HTTPS_PORT="11443"
 ENV LIBREOFFICE_INSTALL="N"
 ENV MAX_ATTEMPTS_STARTUP="3"
 ENV DB_SYNC_PERIOD="30"
-ENV ENABLE_FIPS_LIBRARIES="N"
+ENV FIPS_VERSION=""
 
 RUN apk add --no-cache \
       openjdk17-jdk \
@@ -31,7 +31,8 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 COPY mft_server /opt/mft_server
-COPY --chmod=755 ./run.sh /opt/mft_server/run.sh
+RUN mkdir -p /opt/mft_server/startup_scripts /opt/mft_server/startup_scripts/pre_service_start /opt/mft_server/startup_scripts/post_service_start
+COPY --chmod=755 ./run.sh /opt/mft_server/startup_scripts/run.sh
 
 WORKDIR /opt/mft_server
 
@@ -66,4 +67,4 @@ VOLUME /opt/mft_server/users
 
 HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=3 CMD netstat -an | grep -E ":(${JSCAPE_MANAGEMENT_HTTP_PORT}|${JSCAPE_MANAGEMENT_HTTPS_PORT})\s" || exit 1
 
-ENTRYPOINT [ "/opt/mft_server/run.sh" ]
+ENTRYPOINT [ "/opt/mft_server/startup_scripts/run.sh" ]
