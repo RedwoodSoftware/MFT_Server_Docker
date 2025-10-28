@@ -12,7 +12,7 @@ _Please review the license terms prior to deployment_
 JSCAPE provides limited support for its products running in Docker containers.
 
 ### What We Support
-- Functional issues within the JSCAPE container itself
+- Functional product issues within the JSCAPE container itself
 
 ### What We Don't Support
 - Issues related to the container orchestration environment (e.g., Kubernetes, Docker Swarm), including:
@@ -77,7 +77,7 @@ This will start the MFT Server with the specified configuration and make it acce
 
 ### Image Details
 The MFT Server image defines the environment baseline configuration
-- Base image is `alpine:22.04`.
+- Base image is `alpine:3.22.1`.
 - Defining environment variables for configuration.
 - Installing necessary packages such as JRE, curl, unzip, and others.
 - Defining volumes for persistent storage.
@@ -92,3 +92,5 @@ The `run.sh` script is the entry point for the Docker container. It performs the
 - Configures command-line tools and the Management UI.
 - Generates a server key if not present.
 - Starts the main server process.
+- allows running of pre and post custom scripts
+- allows toggling of FIPS compliance for 140-2 and 140-3 based on environment variables
