@@ -131,6 +131,14 @@ toggle_fips() {
         echo "FIPS libraries enabled successfully."
         
     else
+        # Check if default libraries are present (6 files matching bc*jdk18on*)
+        local default_lib_count=$(find /opt/mft_server/libs -maxdepth 1 -name "bc*jdk18on*" -type f | wc -l)
+        
+        if [[ $default_lib_count -eq 6 ]]; then
+            # Default state detected, skip all operations silently
+            return 0
+        fi
+        
         echo "Disabling FIPS libraries (FIPS_VERSION not set)..."
         if [[ -d /opt/mft_server/libs/backup ]]; then
             echo "Restoring original Bouncy Castle libraries from backup..."
@@ -146,7 +154,7 @@ toggle_fips() {
             
             echo "FIPS libraries have been disabled."
         else
-            echo "No backup of original libraries found. Unable to disable FIPS libraries."
+            echo "No backup of original libraries found and original libraries are not in libs directory. Unable to disable FIPS libraries."
             return 1
         fi
     fi
