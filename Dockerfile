@@ -1,7 +1,7 @@
 # Download and unpack target MFT Server installer (usually a .tar.gz or .zip file)
 
 # Select your base image
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 # Define ENV vars
 ENV JSCAPE_ADMIN_USER=""
