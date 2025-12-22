@@ -43,8 +43,10 @@ services:
             - 3000:3000/tcp
             - 3000:3000/udp
         volumes:
-            # REQUIRED license file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
-            - ./license.lic:/opt/mft_server/etc/license.lic
+            # OPTIONAL. This should only be used if you chose to or cannot use the LICENSE_URL / Password. 
+            # Uncomment the following line and provide a valid license.lic file if you use this method. 
+            # License file mapping to allow MFT Server to start. If you do not have this please contact your account manager.
+            #- ./license.lic:/opt/mft_server/etc/license.lic
             # Persistent volume storage for configurations, custom libraries, users, data, and domain logs.
             - mft_server_data:/opt/mft_server/etc
             - mft_server_data:/opt/mft_server/libs/jdbc
