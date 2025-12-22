@@ -94,7 +94,6 @@ This will start the MFT Server with the specified configuration and make it acce
 | `JSCAPE_MANAGEMENT_HTTP_PORT` | HTTP port for admin interface | Number | `"11880"` | `"11880"`, `"8080"` | Must match port mapping in docker-compose. Used by health check. |
 | `JSCAPE_MANAGEMENT_HTTPS_PORT` | HTTPS port for admin interface | Number | `"11443"` | `"11443"`, `"8443"` | Must match port mapping in docker-compose. Used by health check. |
 | `FIPS_VERSION` | Enable FIPS compliance mode | String | `""` (empty) | `"FIPS-140-2"`, `"FIPS-140-3"` | Replaces Bouncy Castle libraries with FIPS-compliant versions. Empty disables FIPS. |
-| `LIBREOFFICE_INSTALL` | Install LibreOffice for document conversion | String | `"N"` | `"Y"` or `"N"` | When `"Y"`, installs LibreOffice during startup. Increases startup time and image size. |
 | `MAX_ATTEMPTS_STARTUP` | Max startup verification attempts | Number | `"3"` | `"5"`, `"10"` | Number of times to check if management port is listening (10s between attempts). |
 | `DB_SYNC_PERIOD` | Database sync period in seconds | Number | `"30"` | `"60"`, `"120"` | Frequency of config synchronization with database. Lower = faster propagation, higher = less DB load. |
 | `LICENSE_URL` | URL to download license file | String | None | `"https://example.com/license"` | Alternative to volume-mounted license. Volume mount takes precedence if both provided. |
