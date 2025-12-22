@@ -77,6 +77,106 @@ tail_server_log() {
     tail -f /opt/mft_server/var/log/server0.log
 }
 
+# Function to download file from password-protected URL
+download_protected_license() {
+    local file_url="$1"
+    local file_password="$2"
+    local output_file="$3"
+    
+    if [[ -z "$file_url" || -z "$file_password" ]]; then
+        echo "URL and password are required for download"
+        return 1
+    fi
+    
+    echo "Fetching password-protected page..."
+    
+    # Download the HTML page to extract form parameters
+    local html_response=$(curl -s "$file_url")
+    
+    # Extract the base URL (protocol + domain)
+    local base_url=$(echo "$file_url" | sed -E 's|(https?://[^/]+).*|\1|')
+    
+    # Parse form action (handle both relative and absolute URLs)
+    local form_action=$(echo "$html_response" | sed -n 's/.*action="\([^"]*\).*/\1/p' | head -1)
+    
+    # If form_action is relative, prepend base_url
+    if [[ "$form_action" != http* ]]; then
+        form_action="${base_url}/${form_action#/}"
+    fi
+    
+    # Extract hidden form fields
+    local domain=$(echo "$html_response" | sed -n 's/.*name="domain" value="\([^"]*\).*/\1/p')
+    local id=$(echo "$html_response" | sed -n 's/.*name="id" value="\([^"]*\).*/\1/p')
+    
+    if [[ -z "$domain" || -z "$id" ]]; then
+        echo "ERROR: Could not parse form parameters from the page"
+        echo "Response: $html_response"
+        return 1
+    fi
+    
+    # Create temporary directory for download and extraction
+    local temp_dir=$(mktemp -d)
+    local zip_file="${temp_dir}/license.zip"
+    
+    echo "Downloading license file..."
+    # Submit the form with password and download to temp location
+    if ! curl -L -X POST "$form_action" \
+        -d "domain=${domain}" \
+        -d "id=${id}" \
+        -d "pwd=${file_password}" \
+        -d "receive=" \
+        -o "$zip_file"; then
+        echo "ERROR: Failed to download file"
+        rm -rf "$temp_dir"
+        return 1
+    fi
+    
+    echo "Extracting license zip file..."
+    # Extract the zip file (handle Windows-style paths with -L to convert to lowercase)
+    # Use || true to continue even if there are warnings
+    unzip -q -o -L "$zip_file" -d "$temp_dir" 2>&1 || true
+    
+    # Check if extraction created any files
+    if [[ $(find "$temp_dir" -type f | wc -l) -lt 2 ]]; then
+        echo "ERROR: Failed to extract zip file - no files found"
+        echo "Attempting to list zip contents:"
+        unzip -l "$zip_file" || true
+        rm -rf "$temp_dir"
+        return 1
+    fi
+    
+    echo "Searching for license.lic file in extracted contents..."
+    # Navigate through the directory structure to find license.lic
+    # Structure: <root_folder>/<any_folders>/"JSCAPE MFT Server" or "jscape mft server"/1/license.lic
+    # The -LL flag converts to lowercase, so search for lowercase version
+    local license_path=$(find "$temp_dir" -type f -ipath "*/jscape mft server/1/license.lic" | head -1)
+    
+    if [[ -z "$license_path" ]]; then
+        echo "ERROR: Could not find license.lic at expected path"
+        echo "Directory structure:"
+        find "$temp_dir" -type f
+        rm -rf "$temp_dir"
+        return 1
+    fi
+    
+    echo "License File Found!"
+    
+    # Ensure output directory exists
+    local output_dir=$(dirname "$output_file")
+    mkdir -p "$output_dir"
+    
+    # Copy license file to the target location
+    if cp "$license_path" "$output_file"; then
+        echo "License downloaded and applied successfully to: $output_file"
+        rm -rf "$temp_dir"
+        return 0
+    else
+        echo "ERROR: Failed to copy license file to target location"
+        rm -rf "$temp_dir"
+        return 1
+    fi
+}
+
 # Function to enable or disable FIPS libraries based on FIPS_VERSION environment variable
 toggle_fips() {
     local fips_version="${FIPS_VERSION:-}"
@@ -193,11 +293,18 @@ fi
 
 if [[ "$LIBREOFFICE_INSTALL" == "Y" ]]; then
     echo "LIBREOFFICE_INSTALL is set to Y, installing LibreOffice..."
-    apt-get update && apt-get install -y libreoffice
+    apk update && apk add --no-cache libreoffice
     echo "LibreOffice installed successfully"
 fi
 
 toggle_fips
+
+# Download protected file if URL and password are provided
+if [[ -n "$LICENSE_URL" && -n "$LICENSE_URL_PASSWORD" ]]; then
+    echo "License file download requested..."
+    DOWNLOAD_OUTPUT="${PROTECTED_FILE_OUTPUT:-/opt/mft_server/etc/license.lic}"
+    download_protected_license "$LICENSE_URL" "$LICENSE_URL_PASSWORD" "$DOWNLOAD_OUTPUT"
+fi
 
 echo "Setting Server Memory..."
 sed -i "s/-Xmx1024m/-Xmx${SERVER_MEMORY}g/g" /opt/mft_server/server.vmoptions

@@ -44,5 +44,12 @@ Thumbs.db
 *.swp
 *.swo
 
+# Explicit files
+.gitignore
+
 # Ignore all folders
 mft_server/
+tests/
+helm/
+
+AGENTS.md

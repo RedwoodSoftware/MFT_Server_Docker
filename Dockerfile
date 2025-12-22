@@ -15,6 +15,8 @@ ENV LIBREOFFICE_INSTALL="N"
 ENV MAX_ATTEMPTS_STARTUP="3"
 ENV DB_SYNC_PERIOD="30"
 ENV FIPS_VERSION=""
+ENV LICENSE_URL=""
+ENV LICENSE_URL_PASSWORD=""
 
 RUN apk add --no-cache \
       openjdk17-jdk \
@@ -57,7 +59,7 @@ EXPOSE 3000/tcp
 EXPOSE 3000/udp
 
 # Define volumes
-VOLUME /opt/mft_server/etc/license.lic
+#VOLUME /opt/mft_server/etc/license.lic
 VOLUME /opt/mft_server/etc
 VOLUME /opt/mft_server/libs/jdbc
 VOLUME /opt/mft_server/libs/actions

@@ -73,11 +73,75 @@ Find a working directory on your server where you'd like to configure the next i
 
 This will start the MFT Server with the specified configuration and make it accessible on the defined ports.
 
+## Environment Variables Reference
+
+### Required Variables
+
+| Variable | Description | Type | Default | Example | Notes |
+|----------|-------------|------|---------|---------|-------|
+| `JSCAPE_ADMIN_USER` | Username for initial MFT Server administrator account | String | None | `"admin"` | Created during initial deployment. Optional if database already initialized. |
+| `JSCAPE_ADMIN_PASSWORD` | Password for initial MFT Server administrator account | String | None | `${JSCAPE_ADMIN_PASSWORD}` | Set in `.env` file for security. Required for initial deployment. |
+| `JDBC_CONNECTION_STRING` | JDBC connection string for backend database | String | `""` (empty) | `"jdbc:postgresql://postgres:5432/mft_server"` | Target database must exist before deployment. Other JDBC compliant flags are supported. Format: `jdbc:<driver>://<host>:<port>/<database>` |
+| `JDBC_USER` | Username for database access | String | `""` (empty) | `"jscape"` | User must have privileges to create/modify tables in target database. |
+| `JDBC_PASSWORD` | Password for database user | String | None | `${JDBC_PASSWORD}` | Set in `.env` file for security. Required when using external database. |
+
+### Optional Variables
+
+| Variable | Description | Type | Default | Example | Notes |
+|----------|-------------|------|---------|---------|-------|
+| `SERVER_MEMORY` | Memory in GB allocated to JVM | Number | `"2"` | `"4"`, `"8"`, `"16"` | Sets JVM `-Xmx` parameter. Ensure container has sufficient resources. |
+| `PREV_VERSION` | Previous JSCAPE version for upgrades | String | `""` (empty) | `"2024.3.1.512"` | Format: `YYYY.X.Y.BUILD`. Only needed during upgrades. Leave empty for new deployments. |
+| `JSCAPE_MANAGEMENT_HTTP_PORT` | HTTP port for admin interface | Number | `"11880"` | `"11880"`, `"8080"` | Must match port mapping in docker-compose. Used by health check. |
+| `JSCAPE_MANAGEMENT_HTTPS_PORT` | HTTPS port for admin interface | Number | `"11443"` | `"11443"`, `"8443"` | Must match port mapping in docker-compose. Used by health check. |
+| `FIPS_VERSION` | Enable FIPS compliance mode | String | `""` (empty) | `"FIPS-140-2"`, `"FIPS-140-3"` | Replaces Bouncy Castle libraries with FIPS-compliant versions. Empty disables FIPS. |
+| `LIBREOFFICE_INSTALL` | Install LibreOffice for document conversion | String | `"N"` | `"Y"` or `"N"` | When `"Y"`, installs LibreOffice during startup. Increases startup time and image size. |
+| `MAX_ATTEMPTS_STARTUP` | Max startup verification attempts | Number | `"3"` | `"5"`, `"10"` | Number of times to check if management port is listening (10s between attempts). |
+| `DB_SYNC_PERIOD` | Database sync period in seconds | Number | `"30"` | `"60"`, `"120"` | Frequency of config synchronization with database. Lower = faster propagation, higher = less DB load. |
+| `LICENSE_URL` | URL to download license file | String | None | `"https://example.com/license"` | Alternative to volume-mounted license. Volume mount takes precedence if both provided. |
+| `LICENSE_URL_PASSWORD` | Password for protected license URL | String | None | `"SuperSecretPassword"` | Required when downloading a protected license via `LICENSE_URL`. |
+
+### Configuration Examples
+
+**Standalone Deployment (.env file):**
+```bash
+JSCAPE_ADMIN_PASSWORD=SecureAdminPassword123!
+JDBC_PASSWORD=SecureDBPassword456!
+```
+
+**PostgreSQL Deployment (.env file):**
+```bash
+JSCAPE_ADMIN_PASSWORD=SecureAdminPassword123!
+JDBC_PASSWORD=SecureDBPassword456!
+POSTGRES_PASSWORD=SecurePostgresPassword789!
+```
+
+**FIPS-Compliant Deployment (docker-compose.yaml):**
+```yaml
+environment:
+  JSCAPE_ADMIN_USER: "admin"
+  JSCAPE_ADMIN_PASSWORD: ${JSCAPE_ADMIN_PASSWORD}
+  SERVER_MEMORY: "8"
+  FIPS_VERSION: "FIPS-140-3"
+  MAX_ATTEMPTS_STARTUP: "5"
+```
+
+**Upgrade Scenario (docker-compose.yaml):**
+```yaml
+environment:
+  JSCAPE_ADMIN_USER: "admin"
+  JSCAPE_ADMIN_PASSWORD: ${JSCAPE_ADMIN_PASSWORD}
+  JDBC_CONNECTION_STRING: "jdbc:postgresql://postgres:5432/mft_server"
+  JDBC_USER: "jscape"
+  JDBC_PASSWORD: ${JDBC_PASSWORD}
+  SERVER_MEMORY: "4"
+  PREV_VERSION: "2024.3.1.512"
+```
+
 ## Components
 
 ### Image Details
 The MFT Server image defines the environment baseline configuration
-- Base image is `alpine:3.22.1`.
+- Base image is `alpine:3.22.2`.
 - Defining environment variables for configuration.
 - Installing necessary packages such as JRE, curl, unzip, and others.
 - Defining volumes for persistent storage.

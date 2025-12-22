@@ -19,6 +19,10 @@ services:
             PREV_VERSION: ""
             # OPTIONAL: Set to either "FIPS-140-2" or "FIPS-140-3" to enable FIPS mode. If not using FIPS, leave blank.
             FIPS_VERSION: ""
+            # OPTIONAL: Protected license URL to download instead of volume-mounting.
+            LICENSE_URL: ""
+            # OPTIONAL: Password for protected license download.
+            LICENSE_URL_PASSWORD: ${LICENSE_URL_PASSWORD}
         # Please note that not all ports are needed and if you do not plan on using them, feel free to omit from your compose file.
         ports:
             # Port mapping for admin HTTP interface (only one of the two is required but both can be used). NOTE: if you choose to update the internal port reference, you must also assign the same port to the JSCAPE_MANAGEMENT_HTTP_PORT environment variable
