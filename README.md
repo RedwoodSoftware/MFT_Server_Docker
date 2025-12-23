@@ -77,27 +77,27 @@ This will start the MFT Server with the specified configuration and make it acce
 
 ### Required Variables
 
-| Variable | Description | Type | Default | Example | Notes |
-|----------|-------------|------|---------|---------|-------|
-| `JSCAPE_ADMIN_USER` | Username for initial MFT Server administrator account | String | None | `"admin"` | Created during initial deployment. Optional if database already initialized. |
-| `JSCAPE_ADMIN_PASSWORD` | Password for initial MFT Server administrator account | String | None | `${JSCAPE_ADMIN_PASSWORD}` | Set in `.env` file for security. Required for initial deployment. |
-| `JDBC_CONNECTION_STRING` | JDBC connection string for backend database | String | `""` (empty) | `"jdbc:postgresql://postgres:5432/mft_server"` | Target database must exist before deployment. Other JDBC compliant flags are supported. Format: `jdbc:<driver>://<host>:<port>/<database>` |
-| `JDBC_USER` | Username for database access | String | `""` (empty) | `"jscape"` | User must have privileges to create/modify tables in target database. |
-| `JDBC_PASSWORD` | Password for database user | String | None | `${JDBC_PASSWORD}` | Set in `.env` file for security. Required when using external database. |
+| Variable | Description | Default | Example | Notes |
+|----------|-------------|---------|---------|-------|
+| `JSCAPE_ADMIN_USER` | Username for initial MFT Server administrator account | None | `"admin"` | Created during initial deployment. Optional if database already initialized. |
+| `JSCAPE_ADMIN_PASSWORD` | Password for initial MFT Server administrator account | None | `"SecureAdminPassword123!"` | Set in `.env` file for security; reference as `${JSCAPE_ADMIN_PASSWORD}` in docker-compose. Required for initial deployment. |
+| `JDBC_CONNECTION_STRING` | JDBC connection string for backend database | `""` (empty) | `"jdbc:postgresql://postgres:5432/mft_server"` | Target database must exist before deployment. Other JDBC compliant flags are supported. Format: `jdbc:<driver>://<host>:<port>/<database>` |
+| `JDBC_USER` | Username for database access | `""` (empty) | `"jscape"` | User must have privileges to create/modify tables in target database. |
+| `JDBC_PASSWORD` | Password for database user | None | `"SecureDBPassword456!"` | Set in `.env` file for security; reference as `${JDBC_PASSWORD}` in docker-compose. Required when using external database. |
 
 ### Optional Variables
 
-| Variable | Description | Type | Default | Example | Notes |
-|----------|-------------|------|---------|---------|-------|
-| `SERVER_MEMORY` | Memory in GB allocated to JVM | Number | `"2"` | `"4"`, `"8"`, `"16"` | Sets JVM `-Xmx` parameter. Ensure container has sufficient resources. |
-| `PREV_VERSION` | Previous JSCAPE version for upgrades | String | `""` (empty) | `"2024.3.1.512"` | Format: `YYYY.X.Y.BUILD`. Only needed during upgrades. Leave empty for new deployments. |
-| `JSCAPE_MANAGEMENT_HTTP_PORT` | HTTP port for admin interface | Number | `"11880"` | `"11880"`, `"8080"` | Must match port mapping in docker-compose. Used by health check. |
-| `JSCAPE_MANAGEMENT_HTTPS_PORT` | HTTPS port for admin interface | Number | `"11443"` | `"11443"`, `"8443"` | Must match port mapping in docker-compose. Used by health check. |
-| `FIPS_VERSION` | Enable FIPS compliance mode | String | `""` (empty) | `"FIPS-140-2"`, `"FIPS-140-3"` | Replaces Bouncy Castle libraries with FIPS-compliant versions. Empty disables FIPS. |
-| `MAX_ATTEMPTS_STARTUP` | Max startup verification attempts | Number | `"3"` | `"5"`, `"10"` | Number of times to check if management port is listening (10s between attempts). |
-| `DB_SYNC_PERIOD` | Database sync period in seconds | Number | `"30"` | `"60"`, `"120"` | Frequency of config synchronization with database. Lower = faster propagation, higher = less DB load. |
-| `LICENSE_URL` | URL to download license file | String | None | `"https://example.com/license"` | Alternative to volume-mounted license. Volume mount takes precedence if both provided. |
-| `LICENSE_URL_PASSWORD` | Password for protected license URL | String | None | `"SuperSecretPassword"` | Required when downloading a protected license via `LICENSE_URL`. |
+| Variable | Description | Default | Example | Notes |
+|----------|-------------|---------|---------|-------|
+| `SERVER_MEMORY` | Memory in GB allocated to JVM | `"4"` | `"4"`, `"8"`, `"16"` | Sets JVM `-Xmx` parameter. Ensure container has sufficient resources. |
+| `PREV_VERSION` | Previous JSCAPE version for upgrades | `""` (empty) | `"2024.3.1.512"` | Format: `YYYY.X.Y.BUILD`. Only needed during upgrades. Leave empty for new deployments. |
+| `JSCAPE_MANAGEMENT_HTTP_PORT` | HTTP port for admin interface | `"11880"` | `"11880"`, `"8080"` | Must match port mapping in docker-compose. Used by health check. |
+| `JSCAPE_MANAGEMENT_HTTPS_PORT` | HTTPS port for admin interface | `"11443"` | `"11443"`, `"8443"` | Must match port mapping in docker-compose. Used by health check. |
+| `FIPS_VERSION` | Enable FIPS compliance mode | `""` (empty) | `"FIPS-140-2"`, `"FIPS-140-3"` | Replaces Bouncy Castle libraries with FIPS-compliant versions. Empty disables FIPS. |
+| `MAX_ATTEMPTS_STARTUP` | Max startup verification attempts | `"3"` | `"5"`, `"10"` | Number of times to check if management port is listening (10s between attempts). |
+| `DB_SYNC_PERIOD` | Database sync period in seconds | `"30"` | `"60"`, `"120"` | Frequency of config synchronization with database. Lower = faster propagation, higher = less DB load. |
+| `LICENSE_URL` | URL to download license file | None | `"https://example.com/license"` | Alternative to volume-mounted license. Volume mount takes precedence if both provided. |
+| `LICENSE_URL_PASSWORD` | Password for protected license URL | None | `"SuperSecretPassword"` | Required when downloading a protected license via `LICENSE_URL`. Set in `.env` and reference as `${LICENSE_URL_PASSWORD}` in docker-compose. |
 
 ### Configuration Examples
 
