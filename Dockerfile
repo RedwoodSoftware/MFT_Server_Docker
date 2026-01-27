@@ -1,7 +1,7 @@
 # Download and unpack target MFT Server installer (usually a .tar.gz or .zip file)
 
 # Select your base image
-FROM alpine:3.22.2
+FROM alpine:3.23.2
 
 # Define ENV vars
 ENV JSCAPE_ADMIN_USER=""
@@ -17,6 +17,8 @@ ENV DB_SYNC_PERIOD="30"
 ENV FIPS_VERSION=""
 ENV LICENSE_URL=""
 ENV LICENSE_URL_PASSWORD=""
+
+RUN addgroup -S jscapeGroup && adduser -S jscapeService -G jscapeGroup
 
 RUN apk add --no-cache \
       openjdk17-jdk \
@@ -67,6 +69,14 @@ VOLUME /opt/mft_server/libs/ext
 VOLUME /opt/mft_server/data
 VOLUME /opt/mft_server/users
 
-HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=3 CMD netstat -an | grep -E ":(${JSCAPE_MANAGEMENT_HTTP_PORT}|${JSCAPE_MANAGEMENT_HTTPS_PORT})\s" || exit 1
+HEALTHCHECK --interval=60s --timeout=30s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:${JSCAPE_MANAGEMENT_HTTP_PORT}/ || \
+      curl -fk https://localhost:${JSCAPE_MANAGEMENT_HTTPS_PORT}/ || \
+      exit 1
+
+RUN chown -R jscapeService:jscapeGroup /opt/mft_server && \
+    setcap CAP_NET_BIND_SERVICE=+eip /opt/mft_server/server
+
+USER jscapeService
 
 ENTRYPOINT [ "/opt/mft_server/startup_scripts/run.sh" ]
