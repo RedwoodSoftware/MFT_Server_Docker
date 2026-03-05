@@ -123,7 +123,7 @@ download_protected_license() {
     if ! curl -L -X POST "$form_action" \
         -d "domain=${domain}" \
         -d "id=${id}" \
-        -d "pwd=${file_password}" \
+        --data-urlencode "pwd=${file_password}" \
         -d "receive=" \
         -o "$zip_file"; then
         echo "ERROR: Failed to download file"
